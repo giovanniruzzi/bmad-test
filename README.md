@@ -22,9 +22,10 @@ Canonical DDL is defined in [`db/init.sql`](db/init.sql).
 
 The API is mounted at the same origin under the `/api/` prefix (PRD FR19) and proxied to the Node container by Caddy in the deployed stack. All endpoints respond with JSON; collections are bare arrays (not envelopes), errors are `{ "error": "<message>" }`, and dates are ISO-8601 UTC strings.
 
-| Method | Path         | Returns                | Status |
-| ------ | ------------ | ---------------------- | ------ |
-| GET    | `/api/tasks` | Array of `Task` objects | 200    |
+| Method | Path         | Body                       | Returns                | Status |
+| ------ | ------------ | -------------------------- | ---------------------- | ------ |
+| GET    | `/api/tasks` | —                          | Array of `Task` objects | 200    |
+| POST   | `/api/tasks` | `{ "description": string }` | The created `Task`      | 201    |
 
 Example response (empty list):
 
@@ -44,6 +45,27 @@ Example response (one task):
   }
 ]
 ```
+
+Example POST request:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' \
+  -d '{"description":"Buy milk"}' \
+  https://<domain>/api/tasks
+```
+
+Example POST response (HTTP 201):
+
+```json
+{
+  "id": 1,
+  "description": "Buy milk",
+  "completed": false,
+  "createdAt": "2026-04-29T10:00:00.000Z"
+}
+```
+
+Validation errors return HTTP 400 with `{ "error": "<message>" }`. Validation rules: `description` must be a string with length 1–500 characters.
 
 > The full endpoint table (POST, PATCH, DELETE) is added by Story 3.3 (Distribution-ready README). This stub satisfies FR20.
 

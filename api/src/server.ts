@@ -1,5 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
-import { listTasks, pool, waitForDb } from './db.js';
+import { createTask, listTasks, pool, waitForDb } from './db.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -15,6 +15,35 @@ app.get('/api/tasks', async (_req: Request, res: Response, next: NextFunction) =
   try {
     const tasks = await listTasks();
     res.json(tasks);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/tasks — create one task. Validation is manual per architecture.md#3.2
+// (no Zod/Joi/Yup in Phase 0). Validation errors are thrown with `.status = 400`
+// so the single error middleware below formats them as {error: message} — the
+// same {error: ...} shape used by 5xx errors. Body parsing is already enabled
+// globally by app.use(express.json({ limit: '10kb' })) on line 11, so a
+// non-application/json request lands here with req.body undefined and trips
+// the typeof check.
+app.post('/api/tasks', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { description } = (req.body ?? {}) as { description?: unknown };
+    if (typeof description !== 'string') {
+      const err: Error & { status?: number } = new Error('description must be a string');
+      err.status = 400;
+      throw err;
+    }
+    if (description.length < 1 || description.length > 500) {
+      const err: Error & { status?: number } = new Error(
+        'description must be between 1 and 500 characters',
+      );
+      err.status = 400;
+      throw err;
+    }
+    const task = await createTask(description);
+    res.status(201).json(task);
   } catch (err) {
     next(err);
   }

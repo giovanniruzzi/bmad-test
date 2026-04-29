@@ -68,3 +68,31 @@ export async function listTasks(): Promise<Task[]> {
     createdAt: row.created_at.toISOString(),
   }));
 }
+
+// Single-statement insert with RETURNING — one round-trip, no follow-up SELECT.
+// owner_id is intentionally NOT in the RETURNING list (architecture.md#4.1,
+// #4.2 — omitted from API JSON in Phase 0). Same column list and same
+// snake_case → camelCase mapping as listTasks (architecture.md#4.5 — boundary
+// mapping in one place). Caller is responsible for validating `description`
+// (server.ts route handler does this); db.ts trusts its caller. SQL injection
+// is prevented by the $1 placeholder, never by string interpolation.
+export async function createTask(description: string): Promise<Task> {
+  const { rows } = await pool.query<{
+    id: string;
+    description: string;
+    completed: boolean;
+    created_at: Date;
+  }>(
+    'INSERT INTO tasks (description) VALUES ($1) RETURNING id, description, completed, created_at',
+    [description],
+  );
+  // INSERT ... RETURNING with no WHERE clause always returns exactly one row.
+  // The non-null assertion is safe (and required by noUncheckedIndexedAccess).
+  const row = rows[0]!;
+  return {
+    id: Number(row.id),
+    description: row.description,
+    completed: row.completed,
+    createdAt: row.created_at.toISOString(),
+  };
+}
