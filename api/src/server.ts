@@ -1,2 +1,77 @@
-// TODO: Story 1.3 — Express app, /api/tasks routes, error middleware, graceful shutdown
-export {};
+import express, { type Request, type Response, type NextFunction } from 'express';
+import { listTasks, pool, waitForDb } from './db.js';
+
+const PORT = Number(process.env.PORT ?? 3000);
+if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
+  console.error(`Invalid PORT: ${process.env.PORT}`);
+  process.exit(1);
+}
+
+const app = express();
+app.use(express.json({ limit: '10kb' }));
+
+// Single route. Mutations (POST/PATCH/DELETE) are Stories 2.1 / 2.3 / 2.4.
+app.get('/api/tasks', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const tasks = await listTasks();
+    res.json(tasks);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Single error middleware — the only place 5xx is returned. Honors a `.status`
+// property on the error so future validation errors (400) work without a second
+// middleware (architecture.md#4.4).
+app.use((err: Error & { status?: number }, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
+  const status = err.status ?? 500;
+  const message = status < 500 ? (err.message ?? 'Bad request') : 'Internal server error';
+  res.status(status).json({ error: message });
+});
+
+async function main(): Promise<void> {
+  // Idempotency guard: a second signal during shutdown must not call
+  // pool.end() twice (pg throws "Called end on pool more than once").
+  let shuttingDown = false;
+  let httpServer: ReturnType<typeof app.listen> | null = null;
+
+  const shutdown = (signal: 'SIGTERM' | 'SIGINT') => {
+    return async () => {
+      if (shuttingDown) {
+        console.log(`${signal} received again during shutdown, ignoring`);
+        return;
+      }
+      shuttingDown = true;
+      console.log(`${signal} received, shutting down...`);
+      try {
+        if (httpServer) {
+          await new Promise<void>((resolve, reject) => {
+            httpServer!.close((err) => (err ? reject(err) : resolve()));
+          });
+        }
+        await pool.end();
+        process.exit(0);
+      } catch (err) {
+        console.error('Error during shutdown:', err);
+        process.exit(1);
+      }
+    };
+  };
+
+  // Install signal handlers BEFORE waitForDb so SIGTERM during the up-to-30s
+  // startup window is honored instead of ignored until the kill timeout.
+  process.on('SIGTERM', shutdown('SIGTERM'));
+  process.on('SIGINT', shutdown('SIGINT'));
+
+  await waitForDb();
+
+  httpServer = app.listen(PORT, () => {
+    console.log(`API listening on port ${PORT}`);
+  });
+}
+
+main().catch((err) => {
+  console.error('Fatal startup error:', err);
+  process.exit(1);
+});

@@ -18,4 +18,33 @@ Phase 0 ships a single `tasks` table. The schema is bootstrapped by Postgres on 
 
 Canonical DDL is defined in [`db/init.sql`](db/init.sql).
 
+## API
+
+The API is mounted at the same origin under the `/api/` prefix (PRD FR19) and proxied to the Node container by Caddy in the deployed stack. All endpoints respond with JSON; collections are bare arrays (not envelopes), errors are `{ "error": "<message>" }`, and dates are ISO-8601 UTC strings.
+
+| Method | Path         | Returns                | Status |
+| ------ | ------------ | ---------------------- | ------ |
+| GET    | `/api/tasks` | Array of `Task` objects | 200    |
+
+Example response (empty list):
+
+```json
+[]
+```
+
+Example response (one task):
+
+```json
+[
+  {
+    "id": 1,
+    "description": "Buy milk",
+    "completed": false,
+    "createdAt": "2026-04-29T10:00:00.000Z"
+  }
+]
+```
+
+> The full endpoint table (POST, PATCH, DELETE) is added by Story 3.3 (Distribution-ready README). This stub satisfies FR20.
+
 
