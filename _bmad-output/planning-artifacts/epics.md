@@ -183,7 +183,8 @@ Each FR maps to exactly one epic (FR20 splits across two by design — stub vs. 
 | FR7–FR11 | Epic 2 | Persistence + state recovery across all restart scenarios |
 | FR12 | Epic 1 | No-auth posture established at deploy time |
 | FR13 | Epic 1 | Nullable `owner_id` in schema |
-| FR14–FR17 | Epic 2 | The four REST endpoints with real behavior |
+| FR14 | Epic 1 | `GET /api/tasks` endpoint (delivered in Story 1.3) |
+| FR15–FR17 | Epic 2 | The three mutation REST endpoints (POST/PATCH/DELETE) with real behavior |
 | FR18 | Epic 2 | API usable without auth (curl/Shortcuts/cron) |
 | FR19 | Epic 1 | Same-origin path prefix (Caddy routing) |
 | FR20 | Epic 1 (stub) + Epic 3 (full content) | API endpoint table in README |
@@ -352,6 +353,8 @@ So that the no-auth, no-onboarding posture is established at the UI level before
 
 **Scope note:** This story is deliberately consolidated (originally drafted as 1.5 + 1.6). Dockerfiles, Caddy config, Compose orchestration, and the first production HTTPS deploy are kept together because they are a single end-to-end discipline check — the brief's highest-risk bullet — and splitting them would let a "green local compose" hide a broken production deploy. Do not re-split.
 
+**Time budget:** Soft target ~2 hours. **Hard alarm at 3 hours** — if the story has not produced a working HTTPS public URL by the 3-hour mark, halt and trigger the brutal-cut-order replan (cut Story 3.4 first, then 3.3, then 3.2, then 3.1) before continuing. This story carries the largest single time-risk in the day; an unbounded overrun cascades through the entire plan.
+
 As the builder (and any self-hoster),
 I want one `docker compose up` command to bring the full stack online, both locally and on a public VPS over HTTPS,
 So that the deploy discipline is proven end-to-end before any business logic is added — addressing the brief's highest-risk single bullet first.
@@ -477,9 +480,11 @@ So that I am never left wondering whether my action succeeded silently and so su
 **And** the error message auto-dismisses after ~3 seconds (per Architecture §4.3) or can be dismissed via a close button
 **And** the failed mutation does not block subsequent user actions: the input field, checkboxes, and delete buttons remain interactive — covers FR30
 **And** the failed mutation does not leave the UI in an inconsistent state: the UI either re-fetches `GET /api/tasks` or simply does not apply the failed change locally
-**And** *(forward reference):* Story 3.4 will extend this story by adding optimistic-state revert on failure; this story's AC stands alone without optimistic UI
 **And** errors are reported via inline string only — no `alert()`, no modal dialog, no browser notification — covers FR29's "inline error string" mandate
 **And** no UI thread blocking occurs longer than the user could perceive as "stuck" during error handling — covers NFR4
+
+**Notes:**
+- Story 3.4 (optimistic UI) will extend this story by adding optimistic-state revert on failure; this story's ACs stand alone without optimistic UI and remain correct if 3.4 is cut.
 
 ### Story 2.6: Persistence verification across restart scenarios
 
@@ -555,6 +560,7 @@ So that mobile use is viable without a dedicated mobile design pass.
 **When** I update `web/index.html` and `web/src/App.css` for responsive behavior
 **Then** the `<head>` of `index.html` contains `<meta name="viewport" content="width=device-width, initial-scale=1">` — covers FR26
 **And** opening the deployed URL on a real iPhone-width viewport (verified on a real device, not browser devtools per PRD §Responsive Design) shows no horizontal scroll — covers FR24
+**And** the real-device verification produces a documentary artifact: a screenshot committed to `docs/` (e.g., `docs/mobile-verification.png`) OR a one-line entry in the README's persistence-verification section noting the device model, iOS version, and date of the test
 **And** all interactive elements (the add input, Add button, each task's checkbox, each task's Delete button) present a touch target of at least 44 pixels in their smallest dimension on mobile viewports — covers FR25
 **And** the layout uses CSS that adapts to viewport width (e.g., max-width container with side padding, no fixed pixel widths that would overflow narrow viewports)
 **And** the styling lives in `web/src/App.css` (single vanilla CSS file)
