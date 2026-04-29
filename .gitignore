@@ -3,6 +3,5 @@ dist
 .env
 *.log
 
-# BMAD
 _bmad/
 .agents/
