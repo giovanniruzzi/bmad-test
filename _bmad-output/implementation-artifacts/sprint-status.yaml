@@ -1,5 +1,5 @@
 # generated: 2026-04-29
-# last_updated: 2026-04-29 (Story 1.1 → review)
+# last_updated: 2026-04-29 (Story 1.2 → review)
 
 # project: bmad-test
 # project_key: NOKEY
@@ -44,8 +44,8 @@ story_location: _bmad-output/implementation-artifacts
 
 development_status:
   epic-1: in-progress
-  1-1-repository-scaffold-and-starter-templates: review
-  1-2-database-schema-and-init-sql-bootstrap: backlog
+  1-1-repository-scaffold-and-starter-templates: done
+  1-2-database-schema-and-init-sql-bootstrap: review
   1-3-minimal-api-with-get-api-tasks-returning-empty-list: backlog
   1-4-minimal-frontend-rendering-empty-shell: backlog
   1-5-docker-compose-orchestration-and-production-https-deploy: backlog

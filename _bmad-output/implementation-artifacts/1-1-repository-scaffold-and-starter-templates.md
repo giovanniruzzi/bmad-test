@@ -1,6 +1,6 @@
 # Story 1.1: Repository scaffold and starter templates
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -112,6 +112,10 @@ so that all subsequent stories have a consistent place to add code without furth
     - Tasky-product entries: `.env.example`, `.git`, `.gitignore`, `LICENSE`, `README.md`, `api`, `db`, `e2e`, `web`
     - BMad scaffolding (allowed, see Project Structure Notes): `_bmad`, `_bmad-output`, `.agents`, `docs`
   - [x] Anything else (e.g., a stray `migrations/`, `tests/`, `.github/`, `infra/`, root `package.json`, root `node_modules/`, root `Dockerfile`) is an AC #1 violation — remove it before declaring the story done.
+
+### Review Findings
+
+- [x] [Review][Patch] Top-level `.gitignore` still ignores `_bmad/` and `.agents/`, which contradicts the Project Structure Notes that say BMad scaffolding should remain trackable [.gitignore:6-7]
 
 ## Dev Notes
 
