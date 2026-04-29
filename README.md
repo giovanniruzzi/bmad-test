@@ -47,4 +47,23 @@ Example response (one task):
 
 > The full endpoint table (POST, PATCH, DELETE) is added by Story 3.3 (Distribution-ready README). This stub satisfies FR20.
 
+## Quickstart
+
+Tasky runs as a three-service Docker Compose stack — Caddy (web + TLS), Node (api), Postgres (db) — and is identical between local sanity checks and a real VPS deploy. The only difference is the value of `DOMAIN`.
+
+```bash
+git clone https://github.com/giovanniruzzi/bmad-test
+cd bmad-test
+cp .env.example .env
+# edit .env — set POSTGRES_PASSWORD, DATABASE_URL, DOMAIN
+docker compose up -d
+```
+
+Caddy auto-provisions TLS:
+
+- For a real public domain (DNS pointing at the host): a Let's Encrypt certificate is issued on first request (~5–15 s).
+- For `DOMAIN=localhost`: an internal-CA certificate is issued; verify with `curl -k https://localhost/api/tasks`.
+
+The full README (full endpoint table, troubleshooting, screenshots) ships with Story 3.3.
+
 

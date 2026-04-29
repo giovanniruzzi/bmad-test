@@ -1,5 +1,5 @@
 # generated: 2026-04-29
-# last_updated: 2026-04-29 (Story 1.4 → review)
+# last_updated: 2026-04-29 (Story 1.5 → review)
 
 # project: bmad-test
 # project_key: NOKEY
@@ -48,7 +48,7 @@ development_status:
   1-2-database-schema-and-init-sql-bootstrap: review
   1-3-minimal-api-with-get-api-tasks-returning-empty-list: done
   1-4-minimal-frontend-rendering-empty-shell: review
-  1-5-docker-compose-orchestration-and-production-https-deploy: backlog
+  1-5-docker-compose-orchestration-and-production-https-deploy: review
   epic-1-retrospective: optional
 
   epic-2: backlog
