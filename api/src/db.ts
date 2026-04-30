@@ -132,3 +132,15 @@ export async function toggleTask(
     createdAt: row.created_at.toISOString(),
   };
 }
+
+// Single-statement delete — no follow-up SELECT, no RETURNING (we don't read
+// the deleted row's content; only existence matters). Returns true if a row
+// was deleted, false if no row matched (route handler converts false → 404).
+// pg's result.rowCount is typed as number | null in the type definitions even
+// though real responses always populate it; defensive ?? 0 handles the type.
+// Caller (server.ts route handler) is responsible for validating `id`; db.ts
+// trusts its caller. SQL injection is prevented by the $1 placeholder.
+export async function deleteTask(id: number): Promise<boolean> {
+  const result = await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+  return (result.rowCount ?? 0) > 0;
+}

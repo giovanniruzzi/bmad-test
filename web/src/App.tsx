@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { createTask, fetchTasks, toggleTask, type Task } from './api';
+import { createTask, deleteTask, fetchTasks, toggleTask, type Task } from './api';
 import './App.css';
 
 function App() {
@@ -70,6 +70,16 @@ function App() {
     }
   }
 
+  async function handleDelete(id: number): Promise<void> {
+    try {
+      await deleteTask(id);
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (err) {
+      // FR40: console.* only. Toast surfacing arrives in Story 2.5.
+      console.error(err);
+    }
+  }
+
   return (
     <main>
       <h1>Tasky</h1>
@@ -100,6 +110,9 @@ function App() {
                 aria-label={task.completed ? 'Mark task incomplete' : 'Mark task complete'}
               />
               <span className={task.completed ? 'completed' : ''}>{task.description}</span>
+              <button type="button" onClick={() => handleDelete(task.id)}>
+                Delete
+              </button>
             </li>
           ))}
         </ul>

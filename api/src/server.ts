@@ -1,5 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
-import { createTask, listTasks, pool, toggleTask, waitForDb } from './db.js';
+import { createTask, deleteTask, listTasks, pool, toggleTask, waitForDb } from './db.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -81,6 +81,36 @@ app.patch('/api/tasks/:id', async (req, res: Response, next: NextFunction) => {
       throw err;
     }
     res.status(200).json(updated);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /api/tasks/:id — remove one task. Validates id (regex + safe-integer);
+// no body validation (DELETE bodies are RFC-permitted but ignored). Returns
+// 204 (no body, no Content-Type) on success, 404 on missing, 400 on bad id.
+// Same .status / next(err) pattern as PATCH/POST (architecture.md#4.4).
+app.delete('/api/tasks/:id', async (req, res: Response, next: NextFunction) => {
+  try {
+    const idStr = req.params.id;
+    if (!/^[1-9][0-9]*$/.test(idStr)) {
+      const err: Error & { status?: number } = new Error('id must be a positive integer');
+      err.status = 400;
+      throw err;
+    }
+    const id = Number(idStr);
+    if (!Number.isSafeInteger(id)) {
+      const err: Error & { status?: number } = new Error('id must be a positive integer');
+      err.status = 400;
+      throw err;
+    }
+    const deleted = await deleteTask(id);
+    if (!deleted) {
+      const err: Error & { status?: number } = new Error('task not found');
+      err.status = 404;
+      throw err;
+    }
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
