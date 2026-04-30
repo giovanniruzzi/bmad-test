@@ -6,7 +6,9 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [description, setDescription] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const errorTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     // useEffect callbacks cannot be async (returning a Promise breaks the
@@ -23,6 +25,14 @@ function App() {
       }
     }
     load();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (errorTimerRef.current !== null) {
+        window.clearTimeout(errorTimerRef.current);
+      }
+    };
   }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -48,6 +58,7 @@ function App() {
       // FR40: console.* only. Toast region arrives in Story 2.5. Leave the
       // input value AND focus untouched so the user can retry without retyping.
       console.error(err);
+      showError(err);
     }
   }
 
@@ -67,6 +78,7 @@ function App() {
     } catch (err) {
       // FR40: console.* only. Toast surfacing arrives in Story 2.5.
       console.error(err);
+      showError(err);
     }
   }
 
@@ -77,12 +89,53 @@ function App() {
     } catch (err) {
       // FR40: console.* only. Toast surfacing arrives in Story 2.5.
       console.error(err);
+      showError(err);
     }
+  }
+
+  function showError(messageOrErr: string | unknown): void {
+    let message: string;
+    if (typeof messageOrErr === 'string') {
+      message = messageOrErr;
+    } else if (
+      messageOrErr instanceof Error &&
+      messageOrErr.message.includes(' failed: ')
+    ) {
+      message = messageOrErr.message;
+    } else {
+      message = 'Something went wrong';
+    }
+    setError(message);
+    if (errorTimerRef.current !== null) {
+      window.clearTimeout(errorTimerRef.current);
+    }
+    errorTimerRef.current = window.setTimeout(() => {
+      setError(null);
+      errorTimerRef.current = null;
+    }, 3000);
   }
 
   return (
     <main>
       <h1>Tasky</h1>
+      {error !== null && (
+        <p className="error-toast" role="alert">
+          {error}
+          <button
+            type="button"
+            aria-label="Dismiss error"
+            onClick={() => {
+              setError(null);
+              if (errorTimerRef.current !== null) {
+                window.clearTimeout(errorTimerRef.current);
+                errorTimerRef.current = null;
+              }
+            }}
+          >
+            ×
+          </button>
+        </p>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           ref={inputRef}

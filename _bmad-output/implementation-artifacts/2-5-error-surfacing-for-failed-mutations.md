@@ -1,6 +1,6 @@
 # Story 2.5: Error surfacing for failed mutations
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -70,47 +70,47 @@ so that I am never left wondering whether my action succeeded silently and so su
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1: Add `error` state, `errorTimerRef`, and `showError` helper to `web/src/App.tsx`** (AC: #1, #6, #7, #9, #10, #22)
-  - [ ] Open `/Users/gio/Source/bmad-test/web/src/App.tsx`. Confirm post-2.4 state: contains `tasks`, `loading`, `description` state; `inputRef`; mount `useEffect`; `handleSubmit`, `handleToggle`, `handleDelete`; the `<form>` and three render branches with checkbox + span + Delete button per `<li>`.
-  - [ ] Update the import line to add `useRef` if not already present (Story 2.2 added it for `inputRef`, so it should be there; confirm).
-  - [ ] Inside the `App` component, BELOW the existing `tasks`/`loading`/`description` state declarations, ADD: `const [error, setError] = useState<string | null>(null);` and `const errorTimerRef = useRef<number | null>(null);` (alongside the existing `inputRef`).
-  - [ ] Add the `showError` helper function INSIDE the `App` component, AFTER the existing `handleDelete` (Story 2.4) and BEFORE the `return (` statement. Use the locked code from Dev Notes → "Locked code skeleton — `showError` helper".
-  - [ ] Add a SECOND `useEffect` for cleanup: `useEffect(() => { return () => { if (errorTimerRef.current !== null) { window.clearTimeout(errorTimerRef.current); } }; }, []);`. Place it AFTER the existing mount `useEffect`, BEFORE `handleSubmit`.
-  - [ ] Confirm: `errorTimerRef` is referenced in `showError` AND in the cleanup effect (TS would complain otherwise per `noUnusedLocals`).
-  - [ ] Confirm: `window.setTimeout` and `window.clearTimeout` are used (NOT bare `setTimeout`/`clearTimeout`) so the type is `number`.
+- [x] **Task 1: Add `error` state, `errorTimerRef`, and `showError` helper to `web/src/App.tsx`** (AC: #1, #6, #7, #9, #10, #22)
+  - [x] Open `/Users/gio/Source/bmad-test/web/src/App.tsx`. Confirm post-2.4 state: contains `tasks`, `loading`, `description` state; `inputRef`; mount `useEffect`; `handleSubmit`, `handleToggle`, `handleDelete`; the `<form>` and three render branches with checkbox + span + Delete button per `<li>`.
+  - [x] Update the import line to add `useRef` if not already present (Story 2.2 added it for `inputRef`, so it should be there; confirm).
+  - [x] Inside the `App` component, BELOW the existing `tasks`/`loading`/`description` state declarations, ADD: `const [error, setError] = useState<string | null>(null);` and `const errorTimerRef = useRef<number | null>(null);` (alongside the existing `inputRef`).
+  - [x] Add the `showError` helper function INSIDE the `App` component, AFTER the existing `handleDelete` (Story 2.4) and BEFORE the `return (` statement. Use the locked code from Dev Notes → "Locked code skeleton — `showError` helper".
+  - [x] Add a SECOND `useEffect` for cleanup: `useEffect(() => { return () => { if (errorTimerRef.current !== null) { window.clearTimeout(errorTimerRef.current); } }; }, []);`. Place it AFTER the existing mount `useEffect`, BEFORE `handleSubmit`.
+  - [x] Confirm: `errorTimerRef` is referenced in `showError` AND in the cleanup effect (TS would complain otherwise per `noUnusedLocals`).
+  - [x] Confirm: `window.setTimeout` and `window.clearTimeout` are used (NOT bare `setTimeout`/`clearTimeout`) so the type is `number`.
 
-- [ ] **Task 2: Modify the three handler catch blocks to call `showError(err)`** (AC: #11, #12)
-  - [ ] In `handleSubmit`, modify the catch block from `} catch (err) { console.error(err); }` to `} catch (err) { console.error(err); showError(err); }`. Two-line catch block.
-  - [ ] In `handleToggle`, same modification.
-  - [ ] In `handleDelete`, same modification.
-  - [ ] Do NOT modify the mount `useEffect`'s catch block (per AC #12 — load failures are not in scope).
-  - [ ] Confirm `console.error(err)` STAYS in all three (per FR40); `showError(err)` is APPENDED, not replacing.
+- [x] **Task 2: Modify the three handler catch blocks to call `showError(err)`** (AC: #11, #12)
+  - [x] In `handleSubmit`, modify the catch block from `} catch (err) { console.error(err); }` to `} catch (err) { console.error(err); showError(err); }`. Two-line catch block.
+  - [x] In `handleToggle`, same modification.
+  - [x] In `handleDelete`, same modification.
+  - [x] Do NOT modify the mount `useEffect`'s catch block (per AC #12 — load failures are not in scope).
+  - [x] Confirm `console.error(err)` STAYS in all three (per FR40); `showError(err)` is APPENDED, not replacing.
 
-- [ ] **Task 3: Add the `<p role="alert">` toast region to JSX** (AC: #2, #3, #8, #15)
-  - [ ] In the `return (` JSX, BETWEEN `<h1>Tasky</h1>` and `<form ...>`, INSERT the locked JSX from Dev Notes → "Locked code skeleton — toast JSX region". Three or four lines of JSX.
-  - [ ] Confirm: the `<p>` element is wrapped in `{error !== null && ( ... )}` (conditional rendering — the element is ABSENT from the DOM when error is null per AC #2).
-  - [ ] Confirm: the `<p>` has `role="alert"` AND `className="error-toast"`.
-  - [ ] Confirm: the close `<button>` is `type="button"`, has visible content `×` (U+00D7), `aria-label="Dismiss error"`, and an `onClick` that clears both the error state AND the timer.
-  - [ ] Confirm: zero `<dialog>`, zero modal overlay, zero `aria-live="polite"`, zero `role="status"`.
+- [x] **Task 3: Add the `<p role="alert">` toast region to JSX** (AC: #2, #3, #8, #15)
+  - [x] In the `return (` JSX, BETWEEN `<h1>Tasky</h1>` and `<form ...>`, INSERT the locked JSX from Dev Notes → "Locked code skeleton — toast JSX region". Three or four lines of JSX.
+  - [x] Confirm: the `<p>` element is wrapped in `{error !== null && ( ... )}` (conditional rendering — the element is ABSENT from the DOM when error is null per AC #2).
+  - [x] Confirm: the `<p>` has `role="alert"` AND `className="error-toast"`.
+  - [x] Confirm: the close `<button>` is `type="button"`, has visible content `×` (U+00D7), `aria-label="Dismiss error"`, and an `onClick` that clears both the error state AND the timer.
+  - [x] Confirm: zero `<dialog>`, zero modal overlay, zero `aria-live="polite"`, zero `role="status"`.
 
-- [ ] **Task 4: Append `.error-toast` styling to `web/src/App.css`** (AC: #16)
-  - [ ] Open `/Users/gio/Source/bmad-test/web/src/App.css`. Confirm post-2.4 state.
-  - [ ] APPEND the rules from Dev Notes → "Locked code skeleton — `.error-toast` CSS" character-for-character. Place at end of file.
-  - [ ] Confirm: contrast ratio of text color vs. background ≥ 4.5:1 (the locked colors `#900` on `#fee` give 9.3:1).
-  - [ ] Confirm: zero `outline: none` / `outline: 0` / focus suppression rules.
-  - [ ] Confirm: zero animation/transition rules (auto-dismiss is a state flip, not an animation — Story 3.1 may add transitions).
-  - [ ] Total added: ≤ 15 lines.
+- [x] **Task 4: Append `.error-toast` styling to `web/src/App.css`** (AC: #16)
+  - [x] Open `/Users/gio/Source/bmad-test/web/src/App.css`. Confirm post-2.4 state.
+  - [x] APPEND the rules from Dev Notes → "Locked code skeleton — `.error-toast` CSS" character-for-character. Place at end of file.
+  - [x] Confirm: contrast ratio of text color vs. background ≥ 4.5:1 (the locked colors `#900` on `#fee` give 9.3:1).
+  - [x] Confirm: zero `outline: none` / `outline: 0` / focus suppression rules.
+  - [x] Confirm: zero animation/transition rules (auto-dismiss is a state flip, not an animation — Story 3.1 may add transitions).
+  - [x] Total added: ≤ 15 lines.
 
-- [ ] **Task 5: Static + runtime verification** (AC: #24)
-  - [ ] **Step A — TS + build (always required):**
+- [x] **Task 5: Static + runtime verification** (AC: #24)
+  - [x] **Step A — TS + build (always required):**
     - From `/Users/gio/Source/bmad-test/web/`, run `npm run build`. Expect: zero TS errors; dist emitted.
     - If errors: (a) verify `useRef<number | null>(null)` typing; (b) verify `window.setTimeout` not bare `setTimeout`; (c) verify `useState<string | null>(null)` typing.
   - [ ] **Step B — runtime smoke (preferred):**
     - Run scenarios from Dev Notes → "Runtime verification recipe". All scenarios must pass.
-  - [ ] **Step B fallback:** Document skip in Completion Notes.
-  - [ ] Confirm `git diff web/package.json web/package-lock.json` produces ZERO output (AC #20).
-  - [ ] Confirm `git diff README.md` produces ZERO output (AC #21).
-  - [ ] Confirm `git status` shows EXACTLY two modified files (AC #19): `web/src/App.tsx`, `web/src/App.css`. No untracked new files.
+  - [x] **Step B fallback:** Document skip in Completion Notes.
+  - [x] Confirm `git diff web/package.json web/package-lock.json` produces ZERO output (AC #20).
+  - [x] Confirm `git diff README.md` produces ZERO output (AC #21).
+  - [x] Confirm `git status` shows EXACTLY two modified files (AC #19): `web/src/App.tsx`, `web/src/App.css`. No untracked new files.
 
 ## Dev Notes
 
@@ -419,26 +419,34 @@ The following are common LLM-generated additions that violate the locked archite
 
 ### Context Reference
 
-(Populated by dev agent at story start.)
+Self-contained — story spec includes all locked code skeletons, AC list, anti-patterns, and runtime recipe. No external context document needed.
 
 ### Agent Model Used
 
-(Populated by dev agent at story start.)
+claude-opus-4.7
 
 ### Debug Log References
 
-(Populated by dev agent during execution.)
+None — implementation matched locked skeletons on first pass; build clean on first attempt.
 
 ### Completion Notes List
 
-(Populated by dev agent at story end.)
+- Implemented all locked code skeletons character-for-character: `error` state, `errorTimerRef`, `showError` helper, cleanup `useEffect`, conditional `<p role="alert">` JSX with U+00D7 close button, three catch-block additions in handleSubmit/handleToggle/handleDelete, and `.error-toast` + `.error-toast button` CSS blocks.
+- `window.setTimeout` / `window.clearTimeout` used per AC #7 / #22 to ensure `number` return type matches `useRef<number | null>(null)`.
+- `console.error(err)` retained in all three catch blocks per AC #11 / FR40; `showError(err)` appended on the next line.
+- Mount `useEffect` catch block (Story 1.4) NOT modified per AC #12.
+- **Step A passed:** `npm run build` from `web/` succeeded with zero TS errors. Build output: `dist/index.html` 0.45 kB, `dist/assets/index-*.css` 1.18 kB, `dist/assets/index-*.js` 193.39 kB. Build time 86ms.
+- **Step B (Docker runtime smoke) DEFERRED** per AC #24 "Step B fallback (Docker unavailable)". Static verification (Step A) passed; runtime exercise to be performed when Docker is available or via Story 2.7 Playwright smoke.
+- AC #19/#20/#21 satisfied: `git status` shows exactly two modified source files (`web/src/App.tsx`, `web/src/App.css`); zero diff in `web/package.json`, `web/package-lock.json`, `README.md`.
 
 ### File List
 
-(Populated by dev agent at story end. Expected: `web/src/App.tsx` modified, `web/src/App.css` modified.)
+- `web/src/App.tsx` — modified (added `error` state, `errorTimerRef`, cleanup `useEffect`, `showError` helper, three catch-block additions, `<p role="alert">` JSX with close button)
+- `web/src/App.css` — modified (appended `.error-toast` and `.error-toast button` blocks)
 
 ## Change Log
 
-| Date       | Author             | Change                 |
-| ---------- | ------------------ | ---------------------- |
-| 2026-04-29 | Bob (Scrum Master) | Initial story creation |
+| Date       | Author             | Change                                                                                  |
+| ---------- | ------------------ | --------------------------------------------------------------------------------------- |
+| 2026-04-29 | Bob (Scrum Master) | Initial story creation                                                                  |
+| 2026-04-30 | Amelia (Dev)       | Implemented error toast for failed mutations; Step A build clean; Step B deferred       |
