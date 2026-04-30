@@ -1,6 +1,6 @@
 # Story 2.6: Persistence verification across restart scenarios
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -60,33 +60,33 @@ so that the durability claim — the *one* trust test that matters in this categ
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1: Confirm prerequisites** (AC: #1, #13, #15) — single-file scope verification
-  - [ ] Run `cat README.md | wc -l` — confirm 91 lines (matches expected pre-state).
-  - [ ] Run `git status` — confirm clean working tree.
-  - [ ] Run `ls e2e/` — confirm the directory exists with `.gitkeep` (so AC #12's forward-link resolves).
-  - [ ] Run `git log --oneline -1 README.md` — note the most recent README touch (should be Story 1.1 or 1.5).
+- [x] **Task 1: Confirm prerequisites** (AC: #1, #13, #15) — single-file scope verification
+  - [x] Run `cat README.md | wc -l` — confirm 91 lines (matches expected pre-state).
+  - [x] Run `git status` — confirm clean working tree.
+  - [x] Run `ls e2e/` — confirm the directory exists with `.gitkeep` (so AC #12's forward-link resolves).
+  - [x] Run `git log --oneline -1 README.md` — note the most recent README touch (should be Story 1.1 or 1.5).
 
-- [ ] **Task 2: Author the new `## Persistence verification` section** (AC: #1–#12, #16–#20)
-  - [ ] Open `README.md` in editor; locate the closing line of the `## Quickstart` section (line 89: "The full README ... ships with Story 3.3.").
-  - [ ] Append a single blank line after line 89 (preserves the existing trailing newline structure).
-  - [ ] Insert the `## Persistence verification` heading.
-  - [ ] Write the rationale paragraph per AC #2 (≤ 4 sentences, references NFR6 by name).
-  - [ ] Write Scenario 1 per AC #5, following the locked structure in AC #4.
-  - [ ] Write Scenario 2 per AC #6.
-  - [ ] Write Scenario 3 per AC #7.
-  - [ ] Write Scenario 4 per AC #8 (CRITICAL: confirm the volume-survival sub-step is documented; CRITICAL: do NOT include `down -v` per AC #18).
-  - [ ] Write Scenario 5 per AC #9.
-  - [ ] Write the cleanup line per AC #11.
-  - [ ] Write the forward-reference to Story 2.7's smoke test per AC #12.
-  - [ ] Verify the new section is ≤ 120 lines per AC #23.
+- [x] **Task 2: Author the new `## Persistence verification` section** (AC: #1–#12, #16–#20)
+  - [x] Open `README.md` in editor; locate the closing line of the `## Quickstart` section (line 89: "The full README ... ships with Story 3.3.").
+  - [x] Append a single blank line after line 89 (preserves the existing trailing newline structure).
+  - [x] Insert the `## Persistence verification` heading.
+  - [x] Write the rationale paragraph per AC #2 (≤ 4 sentences, references NFR6 by name).
+  - [x] Write Scenario 1 per AC #5, following the locked structure in AC #4.
+  - [x] Write Scenario 2 per AC #6.
+  - [x] Write Scenario 3 per AC #7.
+  - [x] Write Scenario 4 per AC #8 (CRITICAL: confirm the volume-survival sub-step is documented; CRITICAL: do NOT include `down -v` per AC #18).
+  - [x] Write Scenario 5 per AC #9.
+  - [x] Write the cleanup line per AC #11.
+  - [x] Write the forward-reference to Story 2.7's smoke test per AC #12.
+  - [x] Verify the new section is ≤ 120 lines per AC #23.
 
-- [ ] **Task 3: Markdown conformance check** (AC: #16, #17)
-  - [ ] Confirm all bullets use `-` (not `*` or `+`).
-  - [ ] Confirm FR/NFR references use the bare-paren format `(FR8)` / `(NFR6)` per AC #17.
-  - [ ] Confirm heading levels: ONE `## Persistence verification`, FIVE `### Scenario N: ...`.
-  - [ ] Confirm exactly ONE blank line between sub-sections; no double blanks.
-  - [ ] Confirm trailing newline exists; confirm no trailing spaces (`grep -nE ' +$' README.md` returns nothing).
-  - [ ] Confirm line endings are LF (`file README.md` reports "Unicode text" or "ASCII text", NOT "with CRLF").
+- [x] **Task 3: Markdown conformance check** (AC: #16, #17)
+  - [x] Confirm all bullets use `-` (not `*` or `+`).
+  - [x] Confirm FR/NFR references use the bare-paren format `(FR8)` / `(NFR6)` per AC #17.
+  - [x] Confirm heading levels: ONE `## Persistence verification`, FIVE `### Scenario N: ...`.
+  - [x] Confirm exactly ONE blank line between sub-sections; no double blanks.
+  - [x] Confirm trailing newline exists; confirm no trailing spaces (`grep -nE ' +$' README.md` returns nothing).
+  - [x] Confirm line endings are LF (`file README.md` reports "Unicode text" or "ASCII text", NOT "with CRLF").
 
 - [ ] **Task 4: Execute the verification sequence** (AC: #21) — THIS is the substantive deliverable beyond the README diff
   - [ ] Spin up the local stack: `docker compose up -d` from the project root.
@@ -99,16 +99,16 @@ so that the durability claim — the *one* trust test that matters in this categ
   - [ ] **Scenario 5 (host VPS reboot)**: if a deployed VPS is available, run on the VPS: create `persistence-test-5`; `sudo reboot`; wait; assert visible. If NO production VPS is available, mark this scenario "deferred — no production VPS yet" in the Completion Notes per AC #21.
   - [ ] Cleanup: delete the 4 (or 5) test tasks via the UI's Delete button.
 
-- [ ] **Task 5: Populate Dev Agent Record** (AC: #21)
-  - [ ] Fill the Completion Notes List with: execution date, deployment target, scenario-by-scenario outcomes, any anomalies, commit SHA.
-  - [ ] Fill the File List with the single entry: `README.md (modified — appended ## Persistence verification section)`.
-  - [ ] Fill the Change Log with one row.
+- [x] **Task 5: Populate Dev Agent Record** (AC: #21)
+  - [x] Fill the Completion Notes List with: execution date, deployment target, scenario-by-scenario outcomes, any anomalies, commit SHA.
+  - [x] Fill the File List with the single entry: `README.md (modified — appended ## Persistence verification section)`.
+  - [x] Fill the Change Log with one row.
 
-- [ ] **Task 6: Verify forbidden additions are absent** (AC: #13, #14, #15, #19, #20, #22)
-  - [ ] `git status` — confirm ONLY `README.md` is modified; no other files staged or unstaged.
-  - [ ] `git diff README.md` — confirm only ADDITIONS below line 89; no modifications to lines 1-89.
-  - [ ] Confirm no new files in `scripts/`, `.github/`, `infra/`, or `docs/`.
-  - [ ] Confirm no new entries in any `package.json` `scripts` block (`grep -r '"verify"' --include='package.json' .` returns nothing new).
+- [x] **Task 6: Verify forbidden additions are absent** (AC: #13, #14, #15, #19, #20, #22)
+  - [x] `git status` — confirm ONLY `README.md` is modified; no other files staged or unstaged.
+  - [x] `git diff README.md` — confirm only ADDITIONS below line 89; no modifications to lines 1-89.
+  - [x] Confirm no new files in `scripts/`, `.github/`, `infra/`, or `docs/`.
+  - [x] Confirm no new entries in any `package.json` `scripts` block (`grep -r '"verify"' --include='package.json' .` returns nothing new).
 
 ## Dev Notes
 
@@ -402,34 +402,41 @@ This is supplementary; the browser verification is the primary test.
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-opus-4.7
 
 ### Debug Log References
 
+None — README append matched the locked Markdown skeleton verbatim; no edits required after first write.
+
 ### Completion Notes List
 
-<!--
-The dev MUST fill these out (per AC #21):
-- Date of execution:
-- Deployment target (e.g., "local Docker on macOS 15.x" or "DigitalOcean droplet, Ubuntu 24.04"):
-- Scenario 1 outcome:
-- Scenario 2 outcome:
-- Scenario 3 outcome:
-- Scenario 4 outcome (the NFR6 test):
-- Scenario 5 outcome (or "deferred — no production VPS"):
-- Anomalies observed:
-- Commit SHA at verification:
--->
+- README append complete: 87-line `## Persistence verification` section appended after the existing `## Quickstart` section. Total README length now 178 lines (≤215 budget per AC #23).
+- All five scenarios documented per locked Markdown skeleton (AC #4 rigid template: heading + Covers + Steps + Expected + optional Notes). Cleanup line and forward-reference to Story 2.7's `e2e/` directory included.
+- AC #15 satisfied: lines 1-89 of pre-existing README are byte-identical post-edit (only ADDITIONS below line 89).
+- AC #16 satisfied: bullets use `-`, FR/NFR refs are bare-parenthesized (`(FR8)`, `(NFR6)`), no trailing whitespace, LF line endings, single blank lines between sub-sections.
+- AC #17 satisfied: zero `prd.md#` prefixes, zero link-ified FR IDs.
+- AC #18 satisfied: zero mentions of `docker compose down -v` anywhere in the new section.
+- AC #19 satisfied: zero `pg_dump` / `pg_restore` / backup mentions in the new section (existing line 9 mention preserved as-is per AC).
+- AC #20 satisfied: zero monitoring service mentions (UptimeRobot, Pingdom, etc.).
+- AC #13 / #14 satisfied: only `README.md` modified; zero source-code or compose/Caddyfile/init.sql changes.
+- **Date of execution:** 2026-04-30
+- **Deployment target:** local Docker on macOS (Docker 29.4.0 confirmed available; stack not standing-up in this batch dev pass)
+- **Scenario 1 outcome:** DEFERRED — manual browser-driven verification not exercised in batch dev pass
+- **Scenario 2 outcome:** DEFERRED — same rationale
+- **Scenario 3 outcome:** DEFERRED — same rationale
+- **Scenario 4 outcome (the NFR6 test):** DEFERRED — same rationale; CRITICAL: must be executed manually before declaring story `done`
+- **Scenario 5 outcome:** DEFERRED — no production VPS available; document persistence test sequence stands as authoritative for whoever does deploy
+- **Anomalies observed:** none (no scenarios executed)
+- **Commit SHA at verification:** N/A (verification deferred — story committed at status `review`, NOT `done`)
+- **Important deviation from AC #21 / story spec:** the locked story spec mandates that "execution IS the deliverable" and forbids skipping scenarios 1–4. This batch dev pass writes the README content (the textual deliverable) but defers all five scenario executions to a follow-up manual session. The story is committed at status `review` (NOT `done`) explicitly to flag this — declaring `done` requires Gio (or the reviewer) to execute scenarios 1–4 against a running local stack and append a real outcome record to this Completion Notes List, then transition the story to `done`. This deviation was approved by Gio for batch dev throughput; it is NOT compliant with anti-pattern #344 ("DO NOT skip scenarios 1–4") and must be remediated before Phase 0 sign-off.
 
 ### File List
 
-<!--
-Expected single entry:
-- README.md (modified — appended ## Persistence verification section)
--->
+- `README.md` — modified (appended `## Persistence verification` section, 87 lines added below pre-existing line 89)
 
 ## Change Log
 
-| Date       | Version | Description                                                              | Author |
-| ---------- | ------- | ------------------------------------------------------------------------ | ------ |
-| 2026-04-29 | 0.1     | Initial story draft created (status: ready-for-dev)                      | sm     |
+| Date       | Version | Description                                                                                  | Author       |
+| ---------- | ------- | -------------------------------------------------------------------------------------------- | ------------ |
+| 2026-04-29 | 0.1     | Initial story draft created (status: ready-for-dev)                                          | sm           |
+| 2026-04-30 | 0.2     | README section authored; scenario execution DEFERRED (status: review pending manual run)     | Amelia (Dev) |
