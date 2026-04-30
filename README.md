@@ -2,7 +2,131 @@
 
 A deliberately minimal, self-hosted todo app.
 
-Repository: https://github.com/giovanniruzzi/bmad-test
+**Live demo:** <https://your-tasky-domain>
+
+![Screenshot of Tasky showing a task list with several items](docs/screenshot.png)
+
+## Philosophy
+
+Tasky is minimal on purpose. The whole product is four interactions: see your tasks, add a task, mark a task complete, delete a task. There is no authentication, there are no projects, no tags, no due dates, no notifications, no reminders, no sync clients — none of that is in Phase 0, and most of it will never be. Tasky is meant to run on your own VPS, in three small Docker containers, with Postgres as the only data store; backup is `pg_dump` and restore is `psql`. Nothing in the stack reaches out to a third-party SaaS, no telemetry leaves the host, and the entire surface area is small enough that one person can read the whole codebase in an afternoon.
+
+## Quickstart
+
+Tasky runs as a three-service Docker Compose stack — Caddy (web + TLS), Node (api), Postgres (db) — and is identical between local sanity checks and a real VPS deploy. The only difference is the value of `DOMAIN`.
+
+```bash
+git clone https://github.com/giovanniruzzi/bmad-test
+cd bmad-test
+cp .env.example .env
+# Edit .env:
+#   POSTGRES_PASSWORD — generate with: openssl rand -base64 32
+#   DATABASE_URL      — postgres://postgres:<POSTGRES_PASSWORD>@db:5432/tasky
+#   DOMAIN            — your-domain.com (or "localhost" for a local sanity check)
+docker compose up -d
+```
+
+After the stack is up, open `https://<DOMAIN>` in a browser.
+
+Caddy auto-provisions TLS:
+
+- For a real public domain (DNS pointing at the host): a Let's Encrypt certificate is issued on first request (~5–15 s).
+- For `DOMAIN=localhost`: an internal-CA certificate is issued; verify with `curl -k https://localhost/api/tasks`.
+
+## API
+
+The API is mounted at the same origin under the `/api/` prefix and proxied to the Node container by Caddy in the deployed stack. All endpoints respond with JSON; collections are bare arrays (not envelopes), errors are `{ "error": "<message>" }`, and dates are ISO-8601 UTC strings.
+
+| Method | Path             | Request body                | Response body            | Status codes                                 |
+| ------ | ---------------- | --------------------------- | ------------------------ | -------------------------------------------- |
+| GET    | `/api/tasks`     | —                           | Array of `Task` objects  | `200 OK`                                     |
+| POST   | `/api/tasks`     | `{ "description": string }` | The created `Task`       | `201 Created`, `400 Bad Request`             |
+| PATCH  | `/api/tasks/:id` | `{ "completed": boolean }`  | The updated `Task`       | `200 OK`, `400 Bad Request`, `404 Not Found` |
+| DELETE | `/api/tasks/:id` | —                           | empty body               | `204 No Content`, `400 Bad Request`, `404 Not Found` |
+
+### Task object
+
+```json
+{
+  "id": 1,
+  "description": "Buy milk",
+  "completed": false,
+  "createdAt": "2026-04-29T10:00:00.000Z"
+}
+```
+
+- `id` — number — server-assigned auto-incrementing primary key (`BIGSERIAL` in DB).
+- `description` — string — the task text (1–500 characters).
+- `completed` — boolean — whether the task is done.
+- `createdAt` — string — ISO-8601 UTC timestamp of creation.
+- **Not in JSON:** `owner_id` — reserved for Phase 1 multi-user authentication; always `NULL` in Phase 0; **never exposed in API responses**.
+
+### Examples
+
+```bash
+# GET — list all tasks
+curl https://<your-tasky-domain>/api/tasks
+```
+
+```json
+[
+  {
+    "id": 1,
+    "description": "Buy milk",
+    "completed": false,
+    "createdAt": "2026-04-29T10:00:00.000Z"
+  }
+]
+```
+
+```bash
+# POST — create a task
+curl -X POST -H 'Content-Type: application/json' \
+  -d '{"description":"Buy milk"}' \
+  https://<your-tasky-domain>/api/tasks
+```
+
+```json
+{
+  "id": 1,
+  "description": "Buy milk",
+  "completed": false,
+  "createdAt": "2026-04-29T10:00:00.000Z"
+}
+```
+
+```bash
+# PATCH — toggle completion
+curl -X PATCH -H 'Content-Type: application/json' \
+  -d '{"completed":true}' \
+  https://<your-tasky-domain>/api/tasks/1
+```
+
+```json
+{
+  "id": 1,
+  "description": "Buy milk",
+  "completed": true,
+  "createdAt": "2026-04-29T10:00:00.000Z"
+}
+```
+
+```bash
+# DELETE — remove a task
+curl -X DELETE https://<your-tasky-domain>/api/tasks/1
+```
+
+```
+(HTTP 204 — empty body)
+```
+
+### Validation and errors
+
+- `description` must be a string with length 1–500 characters.
+- `completed` must be a boolean.
+- `:id` path parameter must be a positive integer.
+- Validation errors return HTTP `400 Bad Request` with body `{ "error": "<message>" }`.
+- Not-found errors return HTTP `404 Not Found` with body `{ "error": "<message>" }`.
+- The error format (single `error` string field) is consistent across all endpoints.
 
 ## Schema
 
@@ -17,76 +141,6 @@ Phase 0 ships a single `tasks` table. The schema is bootstrapped by Postgres on 
 | `owner_id`    | `BIGINT`       | NULL        | —                    | Reserved for Phase 1 multi-user auth. Always `NULL` in Phase 0; **omitted from API JSON output**.  |
 
 Canonical DDL is defined in [`db/init.sql`](db/init.sql).
-
-## API
-
-The API is mounted at the same origin under the `/api/` prefix (PRD FR19) and proxied to the Node container by Caddy in the deployed stack. All endpoints respond with JSON; collections are bare arrays (not envelopes), errors are `{ "error": "<message>" }`, and dates are ISO-8601 UTC strings.
-
-| Method | Path         | Body                       | Returns                | Status |
-| ------ | ------------ | -------------------------- | ---------------------- | ------ |
-| GET    | `/api/tasks` | —                          | Array of `Task` objects | 200    |
-| POST   | `/api/tasks` | `{ "description": string }` | The created `Task`      | 201    |
-
-Example response (empty list):
-
-```json
-[]
-```
-
-Example response (one task):
-
-```json
-[
-  {
-    "id": 1,
-    "description": "Buy milk",
-    "completed": false,
-    "createdAt": "2026-04-29T10:00:00.000Z"
-  }
-]
-```
-
-Example POST request:
-
-```bash
-curl -X POST -H 'Content-Type: application/json' \
-  -d '{"description":"Buy milk"}' \
-  https://<domain>/api/tasks
-```
-
-Example POST response (HTTP 201):
-
-```json
-{
-  "id": 1,
-  "description": "Buy milk",
-  "completed": false,
-  "createdAt": "2026-04-29T10:00:00.000Z"
-}
-```
-
-Validation errors return HTTP 400 with `{ "error": "<message>" }`. Validation rules: `description` must be a string with length 1–500 characters.
-
-> The full endpoint table (POST, PATCH, DELETE) is added by Story 3.3 (Distribution-ready README). This stub satisfies FR20.
-
-## Quickstart
-
-Tasky runs as a three-service Docker Compose stack — Caddy (web + TLS), Node (api), Postgres (db) — and is identical between local sanity checks and a real VPS deploy. The only difference is the value of `DOMAIN`.
-
-```bash
-git clone https://github.com/giovanniruzzi/bmad-test
-cd bmad-test
-cp .env.example .env
-# edit .env — set POSTGRES_PASSWORD, DATABASE_URL, DOMAIN
-docker compose up -d
-```
-
-Caddy auto-provisions TLS:
-
-- For a real public domain (DNS pointing at the host): a Let's Encrypt certificate is issued on first request (~5–15 s).
-- For `DOMAIN=localhost`: an internal-CA certificate is issued; verify with `curl -k https://localhost/api/tasks`.
-
-The full README (full endpoint table, troubleshooting, screenshots) ships with Story 3.3.
 
 ## Persistence verification
 
@@ -177,4 +231,33 @@ Scenario 1 (browser refresh) is automated by the Playwright smoke test in [`e2e/
 
 Run it locally: `cd e2e && npm install && npm run install:browsers && npm test` (set `TASKY_BASE_URL` to override the default `http://localhost`).
 
+## Backup and restore
 
+Tasky uses no automated backup. The complete application state is in the Postgres `tasky` database. Back it up with `pg_dump` and restore with `psql`.
+
+```bash
+# Backup
+docker compose exec db pg_dump -U postgres tasky > tasky-backup.sql
+
+# Restore
+docker compose exec -T db psql -U postgres -d tasky < tasky-backup.sql
+```
+
+The schema is documented above; if the database volume is destroyed, recreate it (Docker auto-runs `db/init.sql` on first init) before restoring data.
+
+## Acknowledged Phase 0 gaps
+
+These gaps are deliberate. Phase 0 ships a working app for a single self-hosting individual; closing these gaps is Phase 1 work.
+
+- **No authentication.** The app exposes the API and UI without auth. Anyone who can reach the URL can read, create, update, and delete tasks. Deploy behind Tailscale, Cloudflare Tunnel, or HTTP basic-auth at the reverse proxy if external-network exposure is a concern.
+- **No rate limiting.** No request-rate enforcement at the API or proxy layer. A burst of requests will not be throttled.
+- **No automated backups.** Backup is manual via `pg_dump` (see above). No scheduled snapshots, no off-site replication, no point-in-time recovery.
+- **No monitoring.** No health-check dashboard, no alerting, no log aggregation. Logs are container `stdout`; inspect via `docker compose logs`.
+
+These gaps block external-user use until Phase 1.
+
+## Repository
+
+Repository: <https://github.com/giovanniruzzi/bmad-test>
+
+License: not specified (all rights reserved by default — fork/clone permitted by GitHub TOS for personal use).

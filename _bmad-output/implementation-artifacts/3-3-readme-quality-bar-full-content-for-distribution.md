@@ -1,6 +1,6 @@
 # Story 3.3: README quality bar — full content for distribution
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -560,17 +560,17 @@ In scope (this story OWNS these):
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Read current state and gather verification inputs (Dev Note #1)
-  - [ ] Read full current `README.md`.
-  - [ ] Read `api/src/server.ts` to verify endpoint table accuracy (status codes, response shapes, validation rules).
-  - [ ] Read `db/init.sql` to verify schema table accuracy.
-  - [ ] Read `docker-compose.yml` and `.env.example` (or wherever env vars are documented) to verify Quickstart accuracy (variable names, image versions if mentioned).
-  - [ ] Identify the current deployed URL from Story 1.5 — confirm reachability (Dev Note #5). If unreachable, document the gap and use placeholder.
-  - [ ] Identify Story 2.6's Persistence verification section content — note its exact text (preserve verbatim — Dev Note #14).
-  - [ ] Check if Story 2.7 added a smoke-test note inside Persistence verification — preserve it.
-  - [ ] Check if Story 3.2 chose Form B (README mobile-verification line) — preserve it.
+- [x] Task 1: Read current state and gather verification inputs (Dev Note #1)
+  - [x] Read full current `README.md`.
+  - [x] Read `api/src/server.ts` to verify endpoint table accuracy (status codes, response shapes, validation rules).
+  - [x] Read `db/init.sql` to verify schema table accuracy.
+  - [x] Read `docker-compose.yml` and `.env.example` (or wherever env vars are documented) to verify Quickstart accuracy (variable names, image versions if mentioned).
+  - [x] Identify the current deployed URL from Story 1.5 — confirm reachability (Dev Note #5). If unreachable, document the gap and use placeholder.
+  - [x] Identify Story 2.6's Persistence verification section content — note its exact text (preserve verbatim — Dev Note #14).
+  - [x] Check if Story 2.7 added a smoke-test note inside Persistence verification — preserve it.
+  - [x] Check if Story 3.2 chose Form B (README mobile-verification line) — preserve it.
 
-- [ ] Task 2: Capture the screenshot (AC #2, Dev Note #23)
+- [ ] Task 2: Capture the screenshot (AC #2, Dev Note #23) — DEFERRED (runtime artifact; requires running stack)
   - [ ] Ensure the stack is running with 3-5 sample tasks (mix of completed/not-completed states).
   - [ ] Open the deployed URL (or `http://localhost`) in a desktop browser at default zoom (100%).
   - [ ] Capture a region screenshot of the app's content area only (no browser chrome).
@@ -578,69 +578,69 @@ In scope (this story OWNS these):
   - [ ] Verify file size < 500 KB ideally; < 1 MB hard ceiling. Use `pngquant` if needed.
   - [ ] Verify dimensions ~1200-1800px wide.
 
-- [ ] Task 3: Author the Philosophy paragraph (AC #3, Dev Note #7)
-  - [ ] Draft a 4-6 sentence paragraph in the discipline-thesis voice.
-  - [ ] Include: minimal on purpose; the four interactions are the whole product; no auth/projects/tags/due-dates/notifications in Phase 0; self-hosted; `pg_dump` is backup; no third-party SaaS.
-  - [ ] Avoid: marketing prose, hedge words, CTAs.
+- [x] Task 3: Author the Philosophy paragraph (AC #3, Dev Note #7)
+  - [x] Draft a 4-6 sentence paragraph in the discipline-thesis voice.
+  - [x] Include: minimal on purpose; the four interactions are the whole product; no auth/projects/tags/due-dates/notifications in Phase 0; self-hosted; `pg_dump` is backup; no third-party SaaS.
+  - [x] Avoid: marketing prose, hedge words, CTAs.
 
-- [ ] Task 4: Build the API endpoint table and examples (AC #5/6, Dev Notes #9/10/11/12)
-  - [ ] Compose the 4-row endpoint table per the locked skeleton.
-  - [ ] Verify each row matches actual API behavior (Stories 2.1/2.3/2.4 + server.ts).
-  - [ ] Adjust rows to match REALITY if any divergence (e.g., DELETE returning 200 vs 204).
-  - [ ] Compose the Task object JSON shape and field bullet list.
-  - [ ] Compose the four example curl commands + responses (GET, POST, PATCH, DELETE).
-  - [ ] Compose the validation rules + error format section.
+- [x] Task 4: Build the API endpoint table and examples (AC #5/6, Dev Notes #9/10/11/12)
+  - [x] Compose the 4-row endpoint table per the locked skeleton.
+  - [x] Verify each row matches actual API behavior (Stories 2.1/2.3/2.4 + server.ts).
+  - [x] Adjust rows to match REALITY if any divergence (e.g., DELETE returning 200 vs 204).
+  - [x] Compose the Task object JSON shape and field bullet list.
+  - [x] Compose the four example curl commands + responses (GET, POST, PATCH, DELETE).
+  - [x] Compose the validation rules + error format section.
 
-- [ ] Task 5: Compose the Backup and restore section (AC #10, Dev Note #15)
-  - [ ] Verify the actual `POSTGRES_USER` value used in `docker-compose.yml`.
-  - [ ] Compose the one-paragraph explanation + backup command + restore command + rebuild note.
+- [x] Task 5: Compose the Backup and restore section (AC #10, Dev Note #15)
+  - [x] Verify the actual `POSTGRES_USER` value used in `docker-compose.yml`.
+  - [x] Compose the one-paragraph explanation + backup command + restore command + rebuild note.
 
-- [ ] Task 6: Compose the Acknowledged Phase 0 gaps section (AC #8/9, Dev Note #16)
-  - [ ] Compose the 4-bullet list (no auth, no rate limiting, no automated backups, no monitoring).
-  - [ ] Include the Tailscale/Cloudflare Tunnel/basic-auth note (inside the auth bullet OR as a separate paragraph).
-  - [ ] End with the sentence about Phase 1.
-  - [ ] OPTIONAL: include the no-optimistic-UI bullet IF Story 3.4 was cut at story-start.
+- [x] Task 6: Compose the Acknowledged Phase 0 gaps section (AC #8/9, Dev Note #16)
+  - [x] Compose the 4-bullet list (no auth, no rate limiting, no automated backups, no monitoring).
+  - [x] Include the Tailscale/Cloudflare Tunnel/basic-auth note (inside the auth bullet OR as a separate paragraph).
+  - [x] End with the sentence about Phase 1.
+  - [ ] OPTIONAL: include the no-optimistic-UI bullet IF Story 3.4 was cut at story-start. (3.4 is still ready-for-dev — bullet omitted.)
 
-- [ ] Task 7: Assemble the full README per the locked skeleton (Dev Note #6 / Locked README skeleton section)
-  - [ ] Title + tagline (preserved verbatim from current README — Dev Note #20).
-  - [ ] Live demo URL line.
-  - [ ] Screenshot embed.
-  - [ ] Philosophy section (Task 3 output).
-  - [ ] Quickstart section (preserve current quickstart base + add `.env` setup details — Dev Note #8).
-  - [ ] API section (Task 4 output).
-  - [ ] Schema section (preserved verbatim from current README — Dev Note #13).
-  - [ ] Persistence verification section (preserved verbatim from Stories 2.6/2.7/3.2 — Dev Note #14).
-  - [ ] Backup and restore section (Task 5 output).
-  - [ ] Acknowledged Phase 0 gaps section (Task 6 output).
-  - [ ] Repository section (preserved + relocated from current line 5 — Dev Note #19).
+- [x] Task 7: Assemble the full README per the locked skeleton (Dev Note #6 / Locked README skeleton section)
+  - [x] Title + tagline (preserved verbatim from current README — Dev Note #20).
+  - [x] Live demo URL line.
+  - [x] Screenshot embed.
+  - [x] Philosophy section (Task 3 output).
+  - [x] Quickstart section (preserve current quickstart base + add `.env` setup details — Dev Note #8).
+  - [x] API section (Task 4 output).
+  - [x] Schema section (preserved verbatim from current README — Dev Note #13).
+  - [x] Persistence verification section (preserved verbatim from Stories 2.6/2.7/3.2 — Dev Note #14).
+  - [x] Backup and restore section (Task 5 output).
+  - [x] Acknowledged Phase 0 gaps section (Task 6 output).
+  - [x] Repository section (preserved + relocated from current line 5 — Dev Note #19).
 
-- [ ] Task 8: Anti-pattern self-audit (Dev Note "Anti-patterns")
-  - [ ] Confirm no badges, no TOC, no troubleshooting/FAQ/roadmap sections.
-  - [ ] Confirm no emoji in headings.
-  - [ ] Confirm no HTML embeds, no Mermaid, no GIFs.
-  - [ ] Confirm no competitor mentions, no testimonials, no CTAs.
-  - [ ] Confirm no analytics SDK references in example code.
-  - [ ] Confirm no LICENSE, CONTRIBUTING, .github/ files added.
-  - [ ] Confirm screenshot path is `docs/screenshot.png` (not relocated).
-  - [ ] Confirm `db/init.sql` link still present.
+- [x] Task 8: Anti-pattern self-audit (Dev Note "Anti-patterns")
+  - [x] Confirm no badges, no TOC, no troubleshooting/FAQ/roadmap sections.
+  - [x] Confirm no emoji in headings.
+  - [x] Confirm no HTML embeds, no Mermaid, no GIFs.
+  - [x] Confirm no competitor mentions, no testimonials, no CTAs.
+  - [x] Confirm no analytics SDK references in example code.
+  - [x] Confirm no LICENSE, CONTRIBUTING, .github/ files added.
+  - [x] Confirm screenshot path is `docs/screenshot.png` (not relocated).
+  - [x] Confirm `db/init.sql` link still present.
 
-- [ ] Task 9: Local Markdown sanity check
+- [ ] Task 9: Local Markdown sanity check — DEFERRED (no local Markdown previewer invoked in batch-dev mode)
   - [ ] Render the README with a local Markdown previewer (e.g., VS Code's preview, `glow`, `grip`).
   - [ ] Confirm tables align, code blocks have language tags, the screenshot reference resolves.
   - [ ] Fix any obvious rendering issues.
 
-- [ ] Task 10: GitHub render verification (AC #11, Dev Note #34)
+- [ ] Task 10: GitHub render verification (AC #11, Dev Note #34) — DEFERRED (requires push to remote; local commit only in batch-dev mode)
   - [ ] Commit and push the changes to a branch on the GitHub repo.
   - [ ] View the README on github.com.
   - [ ] Confirm tables, code blocks, syntax highlighting, screenshot, and links all render correctly.
   - [ ] If any issue: fix and re-push.
   - [ ] Document the verification (URL of the rendered README, observed issues + fixes) in Completion Notes.
 
-- [ ] Task 11: Update Dev Agent Record + flip status to `review`
-  - [ ] Fill in Completion Notes (verification results, screenshot dimensions/size, URLs verified, deferred sections, etc.).
-  - [ ] Update File List with: `README.md` (rewritten), `docs/screenshot.png` (new).
-  - [ ] Update Change Log with v0.1 entry.
-  - [ ] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-3-readme-quality-bar-full-content-for-distribution` from `ready-for-dev` to `review`. Bump `last_updated` comment.
+- [x] Task 11: Update Dev Agent Record + flip status to `review`
+  - [x] Fill in Completion Notes (verification results, screenshot dimensions/size, URLs verified, deferred sections, etc.).
+  - [x] Update File List with: `README.md` (rewritten), `docs/screenshot.png` (new).
+  - [x] Update Change Log with v0.1 entry.
+  - [x] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-3-readme-quality-bar-full-content-for-distribution` from `ready-for-dev` to `review`. Bump `last_updated` comment.
 
 ## Dev Agent Record
 
@@ -663,39 +663,41 @@ In scope (this story OWNS these):
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-opus-4.7 (github-copilot/claude-opus-4.7)
 
 ### Debug Log References
 
 ### Completion Notes
 
-- Deployed URL used in README (real or placeholder?):
-- Live demo URL reachability verification result:
-- Screenshot dimensions (width × height):
-- Screenshot file size (KB):
-- Browser used for screenshot:
-- Number of sample tasks visible in screenshot (target: 3-5, mix of states):
+- Deployed URL used in README (real or placeholder?): placeholder `https://your-tasky-domain` (no verified public deploy reachable from this batch-dev session).
+- Live demo URL reachability verification result: DEFERRED — placeholder used per Dev Note #5; gap documented here. Operator must replace `your-tasky-domain` with the actual deployed `DOMAIN` before publishing.
+- Screenshot dimensions (width × height): N/A — DEFERRED (Task 2).
+- Screenshot file size (KB): N/A — DEFERRED (Task 2).
+- Browser used for screenshot: N/A — DEFERRED (Task 2).
+- Number of sample tasks visible in screenshot (target: 3-5, mix of states): N/A — DEFERRED (Task 2). README references `docs/screenshot.png` per Dev Note #4 / locked skeleton even though the file does not exist yet; capturing the screenshot is a runtime artifact that requires the running stack and is deferred per the batch-dev approval.
 - API endpoint table verification — divergences from skeleton (if any):
-  - GET /api/tasks: matches?
-  - POST /api/tasks: matches?
-  - PATCH /api/tasks/:id: matches? (request body shape — `completed` only or `completed` + `description`?)
-  - DELETE /api/tasks/:id: matches? (returns 204 empty body, or 200 with body?)
-- Persistence verification section preservation (Story 2.6/2.7/3.2 content present?):
-- Backup commands — POSTGRES_USER value used:
-- Optional: no-optimistic-UI bullet in Phase 0 gaps section (Story 3.4 cut at story-start? Y/N):
-- License decision in Repository section (omitted, "all rights reserved" note, or other?):
-- GitHub render verification URL:
-- GitHub render issues observed + fixes applied:
-- Anti-pattern audit results (any violations?):
-- Final README line count (target: ~150-300 lines):
+  - GET /api/tasks: matches (server.ts:14-21 — 200 OK with array of tasks).
+  - POST /api/tasks: matches (server.ts:30-50 — 201 Created with created Task; 400 Bad Request on validation failure; only `description` field accepted).
+  - PATCH /api/tasks/:id: matches (server.ts:57-87 — 200 OK with updated Task; 400 Bad Request; 404 Not Found). PATCH only accepts `{ "completed": boolean }` — `description` is NOT supported, so the PATCH row was kept narrow per Dev Note #9 ("do NOT document fields the API doesn't accept").
+  - DELETE /api/tasks/:id: matches (server.ts:93-117 — 204 No Content with empty body via `res.status(204).end()`; 400 Bad Request on bad id; 404 Not Found on missing). Skeleton's "204 No Content, 404 Not Found" was extended to include "400 Bad Request" to faithfully reflect the id-validation branch (regex + safe-integer check at server.ts:96-106).
+- Persistence verification section preservation (Story 2.6/2.7/3.2 content present?): YES — preserved verbatim from current README (lines 91-178 of pre-rewrite README), including Story 2.7's smoke-test note and `cd e2e && npm install ...` run-it-locally line. Story 3.2 chose to NOT add a Form B README mobile-verification line, so nothing extra to preserve from 3.2.
+- Backup commands — POSTGRES_USER value used: `postgres` (the default Postgres superuser; docker-compose.yml does not override `POSTGRES_USER`, so the bootstrap user is `postgres` per the postgres:17-alpine image defaults).
+- Optional: no-optimistic-UI bullet in Phase 0 gaps section (Story 3.4 cut at story-start? Y/N): N — Story 3.4 is still `ready-for-dev` in sprint-status.yaml at story-start, so the optional bullet is OMITTED per Dev Note #16.
+- License decision in Repository section (omitted, "all rights reserved" note, or other?): "All rights reserved by default" note included per Dev Note #19 ("the dev may include OR omit the license note entirely; document the choice in Completion Notes").
+- GitHub render verification URL: DEFERRED (Task 10) — local-only batch-dev session does not push to remote.
+- GitHub render issues observed + fixes applied: DEFERRED (Task 10).
+- Anti-pattern audit results (any violations?): NONE. No badges, no TOC, no troubleshooting/FAQ/roadmap, no emoji in headings, no HTML embeds/Mermaid/GIFs, no competitor mentions, no testimonials/CTAs, no analytics SDKs, no LICENSE/CONTRIBUTING/.github files added. Screenshot path is `docs/screenshot.png`. `db/init.sql` link present in Schema section.
+- Final README line count (target: ~150-300 lines): 263 lines.
+- Deferred runtime artifacts (per batch-dev approval): Task 2 (capture `docs/screenshot.png`), Task 9 (local Markdown previewer render), Task 10 (push + github.com render verification). Story is at `review` (not `done`); operator must complete deferred Tasks before marking `done`.
 
 ### File List
 
-- README.md (rewritten — full distribution-ready version per locked skeleton)
-- docs/screenshot.png (new — desktop-browser screenshot of running app with sample tasks)
+- README.md (rewritten — full distribution-ready version per locked skeleton; 263 lines)
+- docs/screenshot.png — DEFERRED (runtime artifact, Task 2 not executed in batch-dev session; README references the path)
 
 ### Change Log
 
 | Date | Version | Description | Author |
 | --- | --- | --- | --- |
 | 2026-04-29 | 0.1 | Initial draft | Bob (Scrum Master) |
+| 2026-04-30 | 0.2 | Implementation: full README rewrite per locked skeleton; runtime artifacts (screenshot, GitHub render verification) deferred per batch-dev approval | Amelia (Dev) |
