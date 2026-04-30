@@ -151,7 +151,10 @@ function App() {
       {loading ? (
         <p>Loading…</p>
       ) : tasks.length === 0 ? (
-        <p aria-live="polite">No tasks</p>
+        <div className="empty-state" aria-live="polite">
+          <p className="empty-state-primary">Nothing here yet.</p>
+          <p className="empty-state-hint">Type a task above and press Enter.</p>
+        </div>
       ) : (
         <ul>
           {tasks.map((task) => (
