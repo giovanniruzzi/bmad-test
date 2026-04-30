@@ -123,3 +123,21 @@ li span {
   font-size: 0.95rem;
   color: #6b6375;
 }
+
+.skeleton {
+  min-height: 44px;
+  background: linear-gradient(90deg, #f0eef2 0%, #e8e4eb 50%, #f0eef2 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+

@@ -1,6 +1,6 @@
 # Story 3.4: Optimistic UI with server reconciliation (Nice-to-ship — first to cut)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -653,114 +653,114 @@ In scope (this story OWNS these):
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Verify React 19+ in package.json (Dev Note #30)
-  - [ ] Read `web/package.json`.
-  - [ ] Confirm `react` and `react-dom` are `^19.0.0` or higher.
-  - [ ] If downgraded: STOP and revert/fix React version before proceeding.
+- [x] Task 1: Verify React 19+ in package.json (Dev Note #30)
+  - [x] Read `web/package.json`.
+  - [x] Confirm `react` and `react-dom` are `^19.0.0` or higher.
+  - [x] If downgraded: STOP and revert/fix React version before proceeding.
 
-- [ ] Task 2: Read current state of `web/src/App.tsx` and `web/src/App.css` (Dev Notes #1, #16)
-  - [ ] Read full current `App.tsx` (post-Story 3.1 — empty-state JSX in place; post-2.5 toast in place).
-  - [ ] Read full current `App.css` (post-Story 3.2 — form/button/list CSS in place).
-  - [ ] Note the line counts and the locations of: imports, state declarations, useEffects, handlers, JSX render branches.
+- [x] Task 2: Read current state of `web/src/App.tsx` and `web/src/App.css` (Dev Notes #1, #16)
+  - [x] Read full current `App.tsx` (post-Story 3.1 — empty-state JSX in place; post-2.5 toast in place).
+  - [x] Read full current `App.css` (post-Story 3.2 — form/button/list CSS in place).
+  - [x] Note the line counts and the locations of: imports, state declarations, useEffects, handlers, JSX render branches.
 
-- [ ] Task 3: Add module-top-level types and reducer (Dev Notes #3, #29)
-  - [ ] ABOVE the `App` function, ADD:
+- [x] Task 3: Add module-top-level types and reducer (Dev Notes #3, #29)
+  - [x] ABOVE the `App` function, ADD:
     - `OptimisticAction` discriminated union type.
     - `applyOptimistic(currentTasks, action): Task[]` reducer function.
-  - [ ] Use the locked code from "Locked code skeleton — `web/src/App.tsx`" section.
+  - [x] Use the locked code from "Locked code skeleton — `web/src/App.tsx`" section.
 
-- [ ] Task 4: Update imports (Dev Notes #2, #29)
-  - [ ] Modify the React import to: `import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react';`
-  - [ ] Verify no other React-related imports needed.
+- [x] Task 4: Update imports (Dev Notes #2, #29)
+  - [x] Modify the React import to: `import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react';`
+  - [x] Verify no other React-related imports needed.
 
-- [ ] Task 5: Add hooks inside `App` (Dev Notes #10, #11)
-  - [ ] After `const [tasks, setTasks] = useState<Task[]>([]);`, ADD:
+- [x] Task 5: Add hooks inside `App` (Dev Notes #10, #11)
+  - [x] After `const [tasks, setTasks] = useState<Task[]>([]);`, ADD:
     - `const [showSkeleton, setShowSkeleton] = useState<boolean>(false);` (skeleton state)
     - `const skeletonTimerRef = useRef<number | null>(null);` (skeleton timer ref)
     - `const [optimisticTasks, addOptimisticTask] = useOptimistic<Task[], OptimisticAction>(tasks, applyOptimistic);` (optimistic state)
     - `const [_isPending, startTransition] = useTransition();` (transition)
 
-- [ ] Task 6: Extend the cleanup useEffect to also clear the skeleton timer (Dev Note #15)
-  - [ ] Find the existing cleanup useEffect (Story 2.5 added one for `errorTimerRef`).
-  - [ ] Extend its return cleanup function to also clear `skeletonTimerRef.current` if non-null.
+- [x] Task 6: Extend the cleanup useEffect to also clear the skeleton timer (Dev Note #15)
+  - [x] Find the existing cleanup useEffect (Story 2.5 added one for `errorTimerRef`).
+  - [x] Extend its return cleanup function to also clear `skeletonTimerRef.current` if non-null.
 
-- [ ] Task 7: Refactor `handleSubmit` (Dev Notes #4, #6, #15)
-  - [ ] Replace the existing `handleSubmit` with the locked code from "Locked code skeleton".
-  - [ ] Verify: `event.preventDefault()` + trim + silent-ignore are OUTSIDE the transition.
-  - [ ] Verify: `setDescription('')` and `inputRef.current?.focus()` happen OUTSIDE the transition.
-  - [ ] Verify: `skeletonTimerRef.current = window.setTimeout(...)` BEFORE the transition.
-  - [ ] Verify: `addOptimisticTask({ type: 'add', task: optimisticTask })` is the FIRST thing inside `startTransition`.
-  - [ ] Verify: `await createTask(trimmed)` follows the optimistic dispatch.
-  - [ ] Verify: on success, `setTasks((prev) => [...prev, serverTask])`.
-  - [ ] Verify: on error, `console.error(err); showError(err);` (no `setTasks` call).
-  - [ ] Verify: `finally` block clears the skeleton timer and `setShowSkeleton(false)`.
-  - [ ] Verify: optimistic id is `-Date.now()` (negative).
+- [x] Task 7: Refactor `handleSubmit` (Dev Notes #4, #6, #15)
+  - [x] Replace the existing `handleSubmit` with the locked code from "Locked code skeleton".
+  - [x] Verify: `event.preventDefault()` + trim + silent-ignore are OUTSIDE the transition.
+  - [x] Verify: `setDescription('')` and `inputRef.current?.focus()` happen OUTSIDE the transition.
+  - [x] Verify: `skeletonTimerRef.current = window.setTimeout(...)` BEFORE the transition.
+  - [x] Verify: `addOptimisticTask({ type: 'add', task: optimisticTask })` is the FIRST thing inside `startTransition`.
+  - [x] Verify: `await createTask(trimmed)` follows the optimistic dispatch.
+  - [x] Verify: on success, `setTasks((prev) => [...prev, serverTask])`.
+  - [x] Verify: on error, `console.error(err); showError(err);` (no `setTasks` call).
+  - [x] Verify: `finally` block clears the skeleton timer and `setShowSkeleton(false)`.
+  - [x] Verify: optimistic id is `-Date.now()` (negative).
 
-- [ ] Task 8: Refactor `handleToggle` (Dev Note #7)
-  - [ ] Replace the existing `handleToggle` with the locked code.
-  - [ ] Verify: wrapped in `startTransition`; `addOptimisticTask({ type: 'toggle', id })` first; `await toggleTask`; `setTasks` on success; `console.error + showError` on error.
+- [x] Task 8: Refactor `handleToggle` (Dev Note #7)
+  - [x] Replace the existing `handleToggle` with the locked code.
+  - [x] Verify: wrapped in `startTransition`; `addOptimisticTask({ type: 'toggle', id })` first; `await toggleTask`; `setTasks` on success; `console.error + showError` on error.
 
-- [ ] Task 9: Refactor `handleDelete` (Dev Note #8)
-  - [ ] Replace the existing `handleDelete` with the locked code.
-  - [ ] Verify: wrapped in `startTransition`; `addOptimisticTask({ type: 'remove', id })` first; `await deleteTask`; `setTasks` on success; `console.error + showError` on error.
+- [x] Task 9: Refactor `handleDelete` (Dev Note #8)
+  - [x] Replace the existing `handleDelete` with the locked code.
+  - [x] Verify: wrapped in `startTransition`; `addOptimisticTask({ type: 'remove', id })` first; `await deleteTask`; `setTasks` on success; `console.error + showError` on error.
 
-- [ ] Task 10: Update render branches to read `optimisticTasks` (Dev Notes #9, #25)
-  - [ ] Change `tasks.length === 0` → `optimisticTasks.length === 0 && !showSkeleton` (per locked code — empty state appears only when both empty AND no skeleton in-flight).
-  - [ ] Change `tasks.map((task) => ...)` → `optimisticTasks.map((task) => ...)`.
-  - [ ] Add `{showSkeleton && <li key="skeleton-create" className="skeleton" />}` AFTER the `optimisticTasks.map` inside the `<ul>`.
+- [x] Task 10: Update render branches to read `optimisticTasks` (Dev Notes #9, #25)
+  - [x] Change `tasks.length === 0` → `optimisticTasks.length === 0 && !showSkeleton` (per locked code — empty state appears only when both empty AND no skeleton in-flight).
+  - [x] Change `tasks.map((task) => ...)` → `optimisticTasks.map((task) => ...)`.
+  - [x] Add `{showSkeleton && <li key="skeleton-create" className="skeleton" />}` AFTER the `optimisticTasks.map` inside the `<ul>`.
 
-- [ ] Task 11: Append `.skeleton` CSS to `App.css` (Dev Note #16)
-  - [ ] Append the locked CSS from "Locked code skeleton — `web/src/App.css`" to the end of the file.
-  - [ ] Verify: `.skeleton` rule + `@keyframes skeleton-shimmer`.
+- [x] Task 11: Append `.skeleton` CSS to `App.css` (Dev Note #16)
+  - [x] Append the locked CSS from "Locked code skeleton — `web/src/App.css`" to the end of the file.
+  - [x] Verify: `.skeleton` rule + `@keyframes skeleton-shimmer`.
 
-- [ ] Task 12: Build verification
-  - [ ] From `web/`, run `npm run build` (`tsc -b && vite build`).
-  - [ ] Confirm zero TS errors.
-  - [ ] Confirm Vite build emits `web/dist/`.
-  - [ ] If TS errors:
+- [x] Task 12: Build verification
+  - [x] From `web/`, run `npm run build` (`tsc -b && vite build`).
+  - [x] Confirm zero TS errors.
+  - [x] Confirm Vite build emits `web/dist/`.
+  - [x] If TS errors:
     - Verify `useOptimistic<Task[], OptimisticAction>` explicit type parameters.
     - Verify `OptimisticAction` discriminated union is in scope.
     - Verify `_isPending` underscore-prefix (or `isPending` is actually used).
     - Verify all imports updated.
 
-- [ ] Task 13: Real-browser verification — fast network (Dev Note #31, recipe Step 3)
+- [ ] Task 13: Real-browser verification — fast network (Dev Note #31, recipe Step 3) — DEFERRED (batch-dev mode; runtime/Docker scenarios deferred per Gio approval)
   - [ ] Run the stack; open the app in Chromium.
   - [ ] Test optimistic CREATE: type → Enter → confirm task appears within ~16ms; id reconciles after API response.
   - [ ] Test optimistic TOGGLE: click checkbox → confirm flip is instant; reconciles on PATCH success.
   - [ ] Test optimistic DELETE: click Delete → confirm removal is instant; confirms on DELETE success.
 
-- [ ] Task 14: Real-browser verification — slow network (Dev Note #31, recipe Steps 4-9)
+- [ ] Task 14: Real-browser verification — slow network (Dev Note #31, recipe Steps 4-9) — DEFERRED
   - [ ] Throttle to "Slow 3G" in DevTools.
   - [ ] Repeat CREATE/TOGGLE/DELETE; confirm UI feedback is still instant.
   - [ ] Stop the API container; trigger CREATE/TOGGLE/DELETE; confirm optimistic state appears, then reverts after timeout, with error toast.
   - [ ] Restart API.
 
-- [ ] Task 15: Concurrent-operation verification (Dev Note #36, recipe Step 10)
+- [ ] Task 15: Concurrent-operation verification (Dev Note #36, recipe Step 10) — DEFERRED
   - [ ] Type "first" + Enter, immediately type "second" + Enter.
   - [ ] Confirm both tasks appear instantly; both reconcile to server-assigned ids.
 
-- [ ] Task 16: Skeleton-row visual verification (OPTIONAL, recipe Step 11)
+- [ ] Task 16: Skeleton-row visual verification (OPTIONAL, recipe Step 11) — DEFERRED (optional)
   - [ ] Optionally temporarily comment out the `addOptimisticTask` in `handleSubmit`.
   - [ ] Throttle to "Slow 3G", create a task.
   - [ ] Confirm shimmering skeleton row appears ~150ms after submit.
   - [ ] REVERT the temporary change.
 
-- [ ] Task 17: Anti-pattern self-audit
-  - [ ] Confirm no new dependencies in `web/package.json`.
-  - [ ] Confirm no `setTasks` call before `await` inside any transition.
-  - [ ] Confirm no `disabled={isPending}` on any button.
-  - [ ] Confirm no `<span class="spinner">` per task.
-  - [ ] Confirm no `flushSync` usage.
-  - [ ] Confirm no `useEffect` syncing `optimisticTasks` with `tasks`.
-  - [ ] Confirm `addOptimisticTask` is always inside `startTransition`.
-  - [ ] Confirm optimistic id uses `-Date.now()` (negative).
-  - [ ] Confirm catch blocks call `showError(err)` after `console.error(err)`.
+- [x] Task 17: Anti-pattern self-audit
+  - [x] Confirm no new dependencies in `web/package.json`.
+  - [x] Confirm no `setTasks` call before `await` inside any transition.
+  - [x] Confirm no `disabled={isPending}` on any button.
+  - [x] Confirm no `<span class="spinner">` per task.
+  - [x] Confirm no `flushSync` usage.
+  - [x] Confirm no `useEffect` syncing `optimisticTasks` with `tasks`.
+  - [x] Confirm `addOptimisticTask` is always inside `startTransition`.
+  - [x] Confirm optimistic id uses `-Date.now()` (negative).
+  - [x] Confirm catch blocks call `showError(err)` after `console.error(err)`.
 
-- [ ] Task 18: Update Dev Agent Record + flip status to `review`
-  - [ ] Fill in Completion Notes (verification results, any deviations from skeleton, scenarios tested, behavioral changes from prior stories).
-  - [ ] Update File List with: `web/src/App.tsx` (refactored), `web/src/App.css` (appended).
-  - [ ] Update Change Log with v0.1 entry.
-  - [ ] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-4-optimistic-ui-with-server-reconciliation-nice-to-ship-first-to-cut` from `ready-for-dev` to `review` OR (if cut) document the cut decision in Completion Notes and mark accordingly.
+- [x] Task 18: Update Dev Agent Record + flip status to `review`
+  - [x] Fill in Completion Notes (verification results, any deviations from skeleton, scenarios tested, behavioral changes from prior stories).
+  - [x] Update File List with: `web/src/App.tsx` (refactored), `web/src/App.css` (appended).
+  - [x] Update Change Log with v0.1 entry.
+  - [x] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-4-optimistic-ui-with-server-reconciliation-nice-to-ship-first-to-cut` from `ready-for-dev` to `review` OR (if cut) document the cut decision in Completion Notes and mark accordingly.
 
 ## Dev Agent Record
 
@@ -782,32 +782,42 @@ In scope (this story OWNS these):
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-opus-4.7 (github-copilot/claude-opus-4.7)
 
 ### Debug Log References
 
 ### Completion Notes
 
-- React version verified (target: ^19.x):
-- Story status: implemented OR cut (per cut criteria)?
-- IF cut: rationale (which prior story over-budget? total elapsed time?):
-- IF cut: skeleton-row fallback implemented (per AC #6)? Y/N:
-- IF cut: README "Phase 0 gaps" section updated with no-optimistic-UI bullet (per Story 3.3 Dev Note #16)? Y/N:
+- React version verified (target: ^19.x): YES — `web/package.json` line 13 confirms `react@^19.2.5` and `react-dom@^19.2.5`.
+- Story status: implemented (NOT cut; no over-budget triggers from prior stories).
+- IF cut: rationale (which prior story over-budget? total elapsed time?): N/A — implemented in full.
+- IF cut: skeleton-row fallback implemented (per AC #6)? Y/N: N/A
+- IF cut: README "Phase 0 gaps" section updated with no-optimistic-UI bullet (per Story 3.3 Dev Note #16)? Y/N: N/A
 - IF implemented:
-  - useOptimistic + useTransition imports verified:
-  - OptimisticAction discriminated union + applyOptimistic reducer placed at module top-level:
-  - All three handlers refactored (startTransition wrapping, optimistic dispatch, await, reconcile/revert):
-  - Skeleton state + 150ms timer + cleanup added:
-  - Render branches updated to read optimisticTasks:
-  - .skeleton CSS appended:
-  - Build (tsc + vite) succeeded with zero errors:
-  - Real-browser verification (fast network) — CREATE / TOGGLE / DELETE all instant?:
-  - Real-browser verification (slow network) — UI still instant?:
-  - Real-browser verification (API stopped) — optimistic state reverts + error toast?:
-  - Concurrent-operation verification (two rapid creates) — both reconcile correctly?:
-  - Skeleton-row visual verification (optional) — shimmer renders?:
-  - Behavioral change documented: input now CLEARS on failed submit (vs Story 2.2's "preserve on error"); Y/N user-noticeable?:
-- Anti-pattern audit results:
+  - useOptimistic + useTransition imports verified: YES — `import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react';`
+  - OptimisticAction discriminated union + applyOptimistic reducer placed at module top-level: YES — lines 5-21 of App.tsx, ABOVE `function App()`.
+  - All three handlers refactored (startTransition wrapping, optimistic dispatch, await, reconcile/revert): YES — `handleSubmit`, `handleToggle`, `handleDelete` all wrap their async work in `startTransition`, dispatch `addOptimisticTask` first, then `await` the API call, then `setTasks` on success or `console.error + showError` on failure (revert is implicit — when `setTasks` is NOT called, `useOptimistic` re-derives from unchanged `tasks` and the optimistic entry vanishes).
+  - Skeleton state + 150ms timer + cleanup added: YES — `showSkeleton` state, `skeletonTimerRef`, 150ms `window.setTimeout` in `handleSubmit` before transition, `finally` block clears it, cleanup `useEffect` clears it on unmount.
+  - Render branches updated to read optimisticTasks: YES — empty-state condition is `optimisticTasks.length === 0 && !showSkeleton`; list iteration is `optimisticTasks.map(...)`; skeleton row appended after the map with `key="skeleton-create"`.
+  - .skeleton CSS appended: YES — `.skeleton` rule + `@keyframes skeleton-shimmer` appended at end of `web/src/App.css` (lines 127-143).
+  - Build (tsc + vite) succeeded with zero errors: YES — `cd web && npm run build` → `tsc -b && vite build` → 0 errors, emitted `dist/index.html` + `dist/assets/index-*.css` (2.02 kB) + `dist/assets/index-*.js` (194.30 kB).
+  - Real-browser verification (fast network) — CREATE / TOGGLE / DELETE all instant?: DEFERRED (Tasks 13–16 deferred per batch-dev mode approved by Gio; runtime/Docker scenarios not executed in this session).
+  - Real-browser verification (slow network) — UI still instant?: DEFERRED.
+  - Real-browser verification (API stopped) — optimistic state reverts + error toast?: DEFERRED.
+  - Concurrent-operation verification (two rapid creates) — both reconcile correctly?: DEFERRED.
+  - Skeleton-row visual verification (optional) — shimmer renders?: DEFERRED (optional task).
+  - Behavioral change documented: input now CLEARS on failed submit (vs Story 2.2's "preserve on error"); Y/N user-noticeable?: YES — locked per Dev Note #6 (`setDescription('')` happens BEFORE the transition starts, so even when the network call later fails the input has already been cleared). User-noticeable on failed creates: the typed text is gone and only the error toast remains; this is the intentional optimistic-UX trade-off.
+- Anti-pattern audit results: PASS.
+  - No new dependencies added to `web/package.json` (untouched).
+  - No `setTasks` call before any `await` inside any transition (only inside try/success branch after `await`).
+  - No `disabled={isPending}` on any button (Add and Delete buttons have no disabled prop).
+  - No `<span class="spinner">` per task (none added).
+  - No `flushSync` usage anywhere.
+  - No `useEffect` synchronizing `optimisticTasks` with `tasks` (useOptimistic derives automatically).
+  - `addOptimisticTask` is always inside `startTransition` in all three handlers.
+  - Optimistic id uses `-Date.now()` (negative sentinel) — line 90 of App.tsx.
+  - All catch blocks call `console.error(err); showError(err);` in that order.
+- Deviation from locked code: NONE. Locked App.tsx skeleton (story lines 232-452) and App.css additions (story lines 458-475) reproduced verbatim.
 
 ### File List
 
@@ -819,3 +829,4 @@ In scope (this story OWNS these):
 | Date | Version | Description | Author |
 | --- | --- | --- | --- |
 | 2026-04-29 | 0.1 | Initial draft | Bob (Scrum Master) |
+| 2026-04-30 | 0.2 | Implemented per locked skeleton: useOptimistic + useTransition, OptimisticAction reducer, three refactored handlers, skeleton state + CSS, render branches updated. Build green. Real-browser verification deferred per batch-dev approval. Status → review. | Amelia (Dev) |
