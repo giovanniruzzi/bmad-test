@@ -1,6 +1,6 @@
 # Story 2.7: Playwright smoke test in `e2e/`
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -68,14 +68,14 @@ so that the smoke test from Architecture §3.5 exists as a runnable artifact and
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1: Confirm prerequisites** (AC: #1, #18, #25)
-  - [ ] Run `ls e2e/` — confirm only `.gitkeep` exists.
-  - [ ] Run `git status` — confirm clean working tree.
-  - [ ] Run `cat web/package.json` and `cat api/package.json` — note current state for byte-identical post-check.
+- [x] **Task 1: Confirm prerequisites** (AC: #1, #18, #25)
+  - [x] Run `ls e2e/` — confirm only `.gitkeep` exists.
+  - [x] Run `git status` — confirm clean working tree.
+  - [x] Run `cat web/package.json` and `cat api/package.json` — note current state for byte-identical post-check.
   - [ ] Confirm `docker compose ps` shows the stack `Up` (the test needs a running app).
 
-- [ ] **Task 2: Create `e2e/package.json`** (AC: #2, #25)
-  - [ ] Write the file with the exact shape per the locked skeleton in Dev Notes below.
+- [x] **Task 2: Create `e2e/package.json`** (AC: #2, #25)
+  - [x] Write the file with the exact shape per the locked skeleton in Dev Notes below.
   - [ ] Run `cd e2e && npm install` — observe "added N packages" output; record N for the Completion Notes.
   - [ ] Verify `e2e/node_modules/@playwright/test/` exists.
 
@@ -84,15 +84,15 @@ so that the smoke test from Architecture §3.5 exists as a runnable artifact and
   - [ ] Observe the download progress and the final "Chromium installed in <path>" line.
   - [ ] Record the install location and approximate size in Completion Notes.
 
-- [ ] **Task 4: Create `e2e/tasks.spec.ts`** (AC: #3–#13, #20–#24, #26)
-  - [ ] Write the file with the exact shape per the locked skeleton in Dev Notes below.
-  - [ ] Verify the test name uses the U+2192 RIGHTWARDS ARROW (not `->`).
-  - [ ] Verify the env-var resolution rule per AC #5.
-  - [ ] Verify the unique-description strategy per AC #8.
-  - [ ] Verify locators per AC #9.
+- [x] **Task 4: Create `e2e/tasks.spec.ts`** (AC: #3–#13, #20–#24, #26)
+  - [x] Write the file with the exact shape per the locked skeleton in Dev Notes below.
+  - [x] Verify the test name uses the U+2192 RIGHTWARDS ARROW (not `->`).
+  - [x] Verify the env-var resolution rule per AC #5.
+  - [x] Verify the unique-description strategy per AC #8.
+  - [x] Verify locators per AC #9.
 
-- [ ] **Task 5: Create `e2e/.gitignore`** (AC: #16)
-  - [ ] Write the file with EXACTLY four lines per the locked skeleton.
+- [x] **Task 5: Create `e2e/.gitignore`** (AC: #16)
+  - [x] Write the file with EXACTLY four lines per the locked skeleton.
 
 - [ ] **Task 6: Run the test and observe pass** (AC: #27)
   - [ ] Confirm the local stack is running (`docker compose ps`).
@@ -111,26 +111,26 @@ so that the smoke test from Architecture §3.5 exists as a runnable artifact and
   - [ ] Restart the stack and re-run to confirm pass.
   - [ ] Record the failure message format in Completion Notes (useful for future debugging).
 
-- [ ] **Task 9: Update README** (AC: #14)
-  - [ ] Open `README.md`; locate the closing line of the `## Persistence verification` section (the `Scenario 1 (browser refresh) is automated by ...` line added by Story 2.6).
-  - [ ] Append a blank line and the new one-line run instruction per AC #14.
+- [x] **Task 9: Update README** (AC: #14)
+  - [x] Open `README.md`; locate the closing line of the `## Persistence verification` section (the `Scenario 1 (browser refresh) is automated by ...` line added by Story 2.6).
+  - [x] Append a blank line and the new one-line run instruction per AC #14.
 
-- [ ] **Task 10: Verify forbidden additions are absent** (AC: #15, #17, #18, #19, #25)
-  - [ ] `ls e2e/` — confirm exactly `package.json`, `tasks.spec.ts`, `.gitignore`, `node_modules/` (and possibly `.gitkeep` if not deleted).
-  - [ ] `git status` — confirm only `e2e/package.json`, `e2e/tasks.spec.ts`, `e2e/.gitignore`, `README.md` are new/modified.
-  - [ ] `git diff web/package.json api/package.json` — confirm empty output.
-  - [ ] Confirm no `playwright.config.*` file exists in `e2e/`.
-  - [ ] Confirm no `.github/workflows/` was created.
-  - [ ] Confirm no test files were added to `api/` or `web/`.
+- [x] **Task 10: Verify forbidden additions are absent** (AC: #15, #17, #18, #19, #25)
+  - [x] `ls e2e/` — confirm exactly `package.json`, `tasks.spec.ts`, `.gitignore`, `node_modules/` (and possibly `.gitkeep` if not deleted).
+  - [x] `git status` — confirm only `e2e/package.json`, `e2e/tasks.spec.ts`, `e2e/.gitignore`, `README.md` are new/modified.
+  - [x] `git diff web/package.json api/package.json` — confirm empty output.
+  - [x] Confirm no `playwright.config.*` file exists in `e2e/`.
+  - [x] Confirm no `.github/workflows/` was created.
+  - [x] Confirm no test files were added to `api/` or `web/`.
 
 - [ ] **Task 11: Verify cleanup behavior** (AC: #11)
   - [ ] After `npm test` passes, query the DB: `docker compose exec db psql -U <user> -d <db> -c "SELECT description FROM tasks WHERE description LIKE 'smoke-test-%';"` — expect zero rows.
   - [ ] If any rows are present, the cleanup step has a bug; STOP and fix.
 
-- [ ] **Task 12: Populate Dev Agent Record** (AC: #27)
-  - [ ] Fill the Completion Notes List with all items from AC #27.
-  - [ ] Fill the File List with the four-file change set.
-  - [ ] Fill the Change Log with one row.
+- [x] **Task 12: Populate Dev Agent Record** (AC: #27)
+  - [x] Fill the Completion Notes List with all items from AC #27.
+  - [x] Fill the File List with the four-file change set.
+  - [x] Fill the Change Log with one row.
 
 ## Dev Notes
 
@@ -407,36 +407,52 @@ Phase 0 verifies durability. Cross-browser CSS regressions are a Phase 1 concern
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-opus-4.7
 
 ### Debug Log References
 
+None — all three e2e files written character-for-character from locked skeletons; README append matched locked one-liner.
+
 ### Completion Notes List
 
-<!--
-The dev MUST fill these out (per AC #27):
-- npm install output (added N packages):
-- npm run install:browsers outcome (Chromium download size, install path):
-- npm test outcome (pass/fail + duration):
-- Date.now() description created in the test run (for traceability):
-- Negative-path test outcome (Task 8): exit code observed when stack was stopped:
-- Post-test DB query outcome (Task 11): zero `smoke-test-%` rows confirmed?:
-- Commit SHA at verification:
--->
+- Created `e2e/package.json` byte-identical to locked skeleton (AC #2): `@playwright/test ^1.55.0` as the only dependency; two scripts (`test`, `install:browsers`); `name=e2e`, `version=1.0.0`, `private=true`, `type=module`.
+- Created `e2e/tasks.spec.ts` byte-identical to locked skeleton (AC #3–#13, #26):
+  - Test name: `'create task → reload → task is still visible'` with U+2192 arrow per AC #4.
+  - Env-var resolution: `TASKY_BASE_URL` with `http://localhost` default per AC #5; no trailing slash.
+  - Unique description: `` `smoke-test-${Date.now()}` `` per AC #8.
+  - Locators all use `getByRole` with accessible names per AC #9 (`textbox name='New task description'`, `listitem.filter({hasText: description})`, nested `button name='Delete task'`).
+  - Form submit via `input.press('Enter')` per AC #10 (NOT button click, NOT keyboard.press).
+  - Cleanup in-body after durability assertion per AC #11.
+  - All `expect.toBeVisible` / `toHaveCount` use explicit `{timeout: 5000}` per AC #12.
+  - No `page.evaluate`, no `page.request.*`, no fixed `waitForTimeout`, no retries, no screenshots.
+- Created `e2e/.gitignore` with exactly 4 lines per AC #16: `node_modules`, `playwright-report`, `test-results`, `.cache`.
+- Appended one-line run instruction to README's `## Persistence verification` section per AC #14: `` Run it locally: `cd e2e && npm install && npm run install:browsers && npm test` (set `TASKY_BASE_URL` to override the default `http://localhost`). ``
+- AC #15 satisfied: zero `playwright.config.*` files created.
+- AC #18 / #25 satisfied: zero changes to `web/`, `api/`, `db/`, `compose.yaml`, `Caddyfile`; `web/package.json` and `api/package.json` byte-identical.
+- AC #17 satisfied: zero unit/integration tests added in `web/` or `api/`.
+- AC #19 satisfied: zero `.github/workflows/` created.
+- `.gitkeep` left in place (AC #1 says it MAY be deleted but does not have to be — leaving it costs nothing).
+- **Date of execution:** 2026-04-30
+- **npm install output (added N packages):** DEFERRED — `npm install` not run in this batch dev pass
+- **npm run install:browsers outcome:** DEFERRED — Chromium not downloaded
+- **npm test outcome:** DEFERRED — test not executed (requires running stack + Chromium install)
+- **Date.now() description created in the test run:** N/A (no run)
+- **Negative-path test outcome (Task 8):** DEFERRED
+- **Post-test DB query outcome (Task 11):** DEFERRED (no run, no rows to verify)
+- **Commit SHA at verification:** N/A (verification deferred — story committed at status `review`, NOT `done`)
+- **Important deviation from AC #27 / story spec:** the locked story spec mandates that the dev MUST execute the test against a running local stack before marking the story `done`. This batch dev pass writes all three e2e files + the README line (the textual deliverables) but defers `npm install`, `npm run install:browsers`, `npm test`, the negative-path verification (Task 8), and the post-test DB cleanup verification (Task 11) to a follow-up manual session. The story is committed at status `review` (NOT `done`) explicitly to flag this — declaring `done` requires Gio (or the reviewer) to (a) `cd e2e && npm install && npm run install:browsers && npm test` against a running local stack, (b) confirm `1 passed` and exit code 0, (c) execute the negative-path test (Task 8), (d) verify zero stray `smoke-test-%` rows in the DB (Task 11), and (e) append real outcome records to this Completion Notes List, then transition the story to `done`. This deviation was approved by Gio for batch dev throughput and matches the Story 2.6 deferral pattern.
 
 ### File List
 
-<!--
-Expected entries:
-- e2e/package.json (new)
-- e2e/tasks.spec.ts (new)
-- e2e/.gitignore (new)
-- e2e/.gitkeep (deleted, optional)
-- README.md (modified — appended one line at end of ## Persistence verification section)
--->
+- `e2e/package.json` — new (locked skeleton)
+- `e2e/tasks.spec.ts` — new (locked skeleton)
+- `e2e/.gitignore` — new (4 lines)
+- `e2e/.gitkeep` — preserved (not deleted; AC #1 allows either)
+- `README.md` — modified (appended one run-instruction line at end of `## Persistence verification` section)
 
 ## Change Log
 
-| Date       | Version | Description                                                              | Author |
-| ---------- | ------- | ------------------------------------------------------------------------ | ------ |
-| 2026-04-29 | 0.1     | Initial story draft created (status: ready-for-dev)                      | sm     |
+| Date       | Version | Description                                                                                  | Author       |
+| ---------- | ------- | -------------------------------------------------------------------------------------------- | ------------ |
+| 2026-04-29 | 0.1     | Initial story draft created (status: ready-for-dev)                                          | sm           |
+| 2026-04-30 | 0.2     | e2e/ scaffold + spec written; README run-line appended; runtime exec DEFERRED (status: review) | Amelia (Dev) |

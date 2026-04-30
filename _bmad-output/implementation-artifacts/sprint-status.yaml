@@ -1,5 +1,5 @@
 # generated: 2026-04-29
-# last_updated: 2026-04-30 (Story 2.6 → review)
+# last_updated: 2026-04-30 (Story 2.7 → review)
 
 # project: bmad-test
 # project_key: NOKEY
@@ -58,7 +58,7 @@ development_status:
   2-4-delete-task-delete-api-tasks-id-and-ui: review
   2-5-error-surfacing-for-failed-mutations: review
   2-6-persistence-verification-across-restart-scenarios: review
-  2-7-playwright-smoke-test-in-e2e: ready-for-dev
+  2-7-playwright-smoke-test-in-e2e: review
   epic-2-retrospective: optional
 
   epic-3: in-progress
