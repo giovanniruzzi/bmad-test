@@ -1,5 +1,5 @@
 # generated: 2026-04-29
-# last_updated: 2026-04-29 (Story 3.4 → ready-for-dev)
+# last_updated: 2026-04-30 (Story 2.3 → review)
 
 # project: bmad-test
 # project_key: NOKEY
@@ -36,7 +36,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-04-29
-last_updated: 2026-04-29
+last_updated: 2026-04-30
 project: bmad-test
 project_key: NOKEY
 tracking_system: file-system
@@ -54,7 +54,7 @@ development_status:
   epic-2: in-progress
   2-1-create-task-post-api-tasks-endpoint: review
   2-2-list-and-create-tasks-in-the-ui: review
-  2-3-toggle-task-completion-patch-api-tasks-id-and-ui: ready-for-dev
+  2-3-toggle-task-completion-patch-api-tasks-id-and-ui: review
   2-4-delete-task-delete-api-tasks-id-and-ui: ready-for-dev
   2-5-error-surfacing-for-failed-mutations: ready-for-dev
   2-6-persistence-verification-across-restart-scenarios: ready-for-dev

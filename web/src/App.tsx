@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { createTask, fetchTasks, type Task } from './api';
+import { createTask, fetchTasks, toggleTask, type Task } from './api';
 import './App.css';
 
 function App() {
@@ -60,6 +60,16 @@ function App() {
     }
   }
 
+  async function handleToggle(id: number, nextCompleted: boolean): Promise<void> {
+    try {
+      const updated = await toggleTask(id, nextCompleted);
+      setTasks((prev) => prev.map((t) => (t.id === id ? updated : t)));
+    } catch (err) {
+      // FR40: console.* only. Toast surfacing arrives in Story 2.5.
+      console.error(err);
+    }
+  }
+
   return (
     <main>
       <h1>Tasky</h1>
@@ -82,7 +92,15 @@ function App() {
       ) : (
         <ul>
           {tasks.map((task) => (
-            <li key={task.id}>{task.description}</li>
+            <li key={task.id}>
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleToggle(task.id, !task.completed)}
+                aria-label={task.completed ? 'Mark task incomplete' : 'Mark task complete'}
+              />
+              <span className={task.completed ? 'completed' : ''}>{task.description}</span>
+            </li>
           ))}
         </ul>
       )}

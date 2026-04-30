@@ -51,3 +51,36 @@ export async function createTask(description: string): Promise<Task> {
   }
   return (await response.json()) as Task;
 }
+
+// PATCH /api/tasks/:id — flips the completed flag and returns the full
+// updated Task. Same error-extraction pattern as createTask: tries the
+// {error:string} JSON shape first, falls back to "${status} ${statusText}"
+// (architecture.md#4.2). Caller (App.tsx handleToggle) replaces the matching
+// task in local state with the returned object — server is the source of
+// truth. No optimistic UI here (Story 3.4 territory).
+export async function toggleTask(id: number, completed: boolean): Promise<Task> {
+  const response = await fetch(`/api/tasks/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed }),
+  });
+  if (!response.ok) {
+    let message = `${response.status} ${response.statusText}`;
+    try {
+      const body = (await response.json()) as unknown;
+      if (
+        body !== null &&
+        typeof body === 'object' &&
+        'error' in body &&
+        typeof (body as { error: unknown }).error === 'string'
+      ) {
+        message = (body as { error: string }).error;
+      }
+    } catch {
+      // Non-JSON body (502 from misconfigured proxy, empty 504, etc.) —
+      // keep the status-text fallback. No console.error here; the caller logs.
+    }
+    throw new Error(`PATCH /api/tasks/${id} failed: ${message}`);
+  }
+  return (await response.json()) as Task;
+}

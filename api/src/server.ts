@@ -1,5 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
-import { createTask, listTasks, pool, waitForDb } from './db.js';
+import { createTask, listTasks, pool, toggleTask, waitForDb } from './db.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -44,6 +44,43 @@ app.post('/api/tasks', async (req: Request, res: Response, next: NextFunction) =
     }
     const task = await createTask(description);
     res.status(201).json(task);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PATCH /api/tasks/:id — toggle completion. Validates id (regex + safe-integer),
+// then body (typeof boolean), then calls toggleTask. Returns 404 with the
+// {error:"task not found"} shape when no row matches. Validation errors are
+// thrown with .status = 4xx so the single error middleware below formats them
+// consistently with POST. Order: id → body → DB (architecture.md#4.4).
+app.patch('/api/tasks/:id', async (req, res: Response, next: NextFunction) => {
+  try {
+    const idStr = req.params.id;
+    if (!/^[1-9][0-9]*$/.test(idStr)) {
+      const err: Error & { status?: number } = new Error('id must be a positive integer');
+      err.status = 400;
+      throw err;
+    }
+    const id = Number(idStr);
+    if (!Number.isSafeInteger(id)) {
+      const err: Error & { status?: number } = new Error('id must be a positive integer');
+      err.status = 400;
+      throw err;
+    }
+    const { completed } = (req.body ?? {}) as { completed?: unknown };
+    if (typeof completed !== 'boolean') {
+      const err: Error & { status?: number } = new Error('completed must be a boolean');
+      err.status = 400;
+      throw err;
+    }
+    const updated = await toggleTask(id, completed);
+    if (updated === null) {
+      const err: Error & { status?: number } = new Error('task not found');
+      err.status = 404;
+      throw err;
+    }
+    res.status(200).json(updated);
   } catch (err) {
     next(err);
   }

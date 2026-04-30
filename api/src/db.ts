@@ -96,3 +96,39 @@ export async function createTask(description: string): Promise<Task> {
     createdAt: row.created_at.toISOString(),
   };
 }
+
+// Single-statement update with RETURNING — one round-trip, no follow-up
+// SELECT. Returns null when no row matches (route handler converts to 404).
+// Returns the FULL post-update Task otherwise (route handler returns 200 +
+// body). owner_id is intentionally NOT touched (architecture.md#4.1 —
+// single-user Phase 0). Same column list and same snake_case → camelCase
+// mapping as listTasks / createTask (architecture.md#4.5 — boundary mapping
+// in one place). Caller (server.ts route handler) is responsible for
+// validating `id` and `completed`; db.ts trusts its caller. SQL injection
+// is prevented by the $1/$2 placeholders, never by string interpolation.
+export async function toggleTask(
+  id: number,
+  completed: boolean,
+): Promise<Task | null> {
+  const { rows } = await pool.query<{
+    id: string;
+    description: string;
+    completed: boolean;
+    created_at: Date;
+  }>(
+    'UPDATE tasks SET completed = $2 WHERE id = $1 RETURNING id, description, completed, created_at',
+    [id, completed],
+  );
+  // UPDATE ... RETURNING returns 0 rows when WHERE matches nothing.
+  // noUncheckedIndexedAccess types rows[0] as the row shape | undefined.
+  const row = rows[0];
+  if (row === undefined) {
+    return null;
+  }
+  return {
+    id: Number(row.id),
+    description: row.description,
+    completed: row.completed,
+    createdAt: row.created_at.toISOString(),
+  };
+}
