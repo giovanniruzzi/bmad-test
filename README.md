@@ -229,7 +229,7 @@ Cleanup: delete the five test tasks via the UI's Delete button when verification
 
 Scenario 1 (browser refresh) is automated by the Playwright smoke test in [`e2e/`](e2e/) — see Story 2.7.
 
-Run it locally: `cd e2e && npm install && npm run install:browsers && npm test` (set `TASKY_BASE_URL` to override the default `http://localhost`).
+Run it locally: `cd e2e && npm install && npm run install:browsers && npm test` (when testing against the local Docker Compose stack with `DOMAIN=localhost`, set `TASKY_BASE_URL=https://localhost`; the test honors any value of `TASKY_BASE_URL`, defaulting to `https://localhost:8443` via `playwright.config.ts` when unset).
 
 ## Backup and restore
 

@@ -252,6 +252,8 @@ All four boxes (Caddy, api, web-static-volume, db) live in a single `docker-comp
 | **End-to-end smoke test** | One Playwright test: "create a task, reload the page, see the task" | This is the deploy-survival test the PRD implicitly cares about most (durability). One test, one file, zero ongoing maintenance burden. |
 | **Manual acceptance** | The PRD's acceptance criteria, walked through by hand on the deployed URL | Sufficient for a single-user app. |
 
+A `playwright.config.ts` is permitted exclusively to set `ignoreHTTPSErrors: true` (required by Story 1.5's HTTPS-only Caddy stack) and a `baseURL` default; no projects, retries, reporters, fixtures, or other ceremony. See Story 2.7 AC #15 (v0.3) for the exhaustive list of forbidden additions.
+
 ---
 
 ## 4. Architectural Patterns & Conventions

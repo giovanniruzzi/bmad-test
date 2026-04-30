@@ -13,7 +13,7 @@ test('create task → reload → task is still visible', async ({ page }) => {
   const description = `smoke-test-${Date.now()}`;
 
   // (c)/(d) Locate the input and type the description
-  const input = page.getByRole('textbox', { name: 'New task description' });
+  const input = page.getByRole('textbox', { name: 'Task description' });
   await input.fill(description);
 
   // (e) Submit via Enter (the form's native submit path)
@@ -30,7 +30,7 @@ test('create task → reload → task is still visible', async ({ page }) => {
   await expect(taskRow).toBeVisible({ timeout: 5000 });
 
   // (i) Cleanup: delete the task and assert removal
-  const deleteButton = taskRow.getByRole('button', { name: 'Delete task' });
+  const deleteButton = taskRow.getByRole('button', { name: 'Delete' });
   await deleteButton.click();
   await expect(taskRow).toHaveCount(0, { timeout: 5000 });
 });
