@@ -1,6 +1,6 @@
 # Story 3.2: Mobile and responsive behavior
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -326,40 +326,40 @@ In scope (this story OWNS these):
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Verify viewport meta tag in `web/index.html` (AC #1)
-  - [ ] Read `web/index.html`.
-  - [ ] Confirm line 6 (or any line in `<head>`) contains `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` (or the `1` variant).
-  - [ ] If missing: add it. If present: no change. Document the verification result in Completion Notes.
+- [x] Task 1: Verify viewport meta tag in `web/index.html` (AC #1)
+  - [x] Read `web/index.html`.
+  - [x] Confirm line 6 (or any line in `<head>`) contains `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` (or the `1` variant).
+  - [x] If missing: add it. If present: no change. Document the verification result in Completion Notes.
 
-- [ ] Task 2: Read existing `web/src/App.css` and identify reconciliation needs (Dev Note "Reconciliation")
-  - [ ] Read the full file.
-  - [ ] List every selector currently present (`main`, `h1`, `p`, `ul`, `li`, `form`, `form input`, `form button`, `li input[type="checkbox"]`, `li button`, `li span`, `.error-toast*`, `.empty-state*`, etc.).
-  - [ ] For each selector in this story's skeleton, decide: NEW / MERGE-INTO / REPLACE.
-  - [ ] Note the planned reconciliation; record in Completion Notes.
+- [x] Task 2: Read existing `web/src/App.css` and identify reconciliation needs (Dev Note "Reconciliation")
+  - [x] Read the full file.
+  - [x] List every selector currently present (`main`, `h1`, `p`, `ul`, `li`, `form`, `form input`, `form button`, `li input[type="checkbox"]`, `li button`, `li span`, `.error-toast*`, `.empty-state*`, etc.).
+  - [x] For each selector in this story's skeleton, decide: NEW / MERGE-INTO / REPLACE.
+  - [x] Note the planned reconciliation; record in Completion Notes.
 
-- [ ] Task 3: Replace and append CSS rules in `web/src/App.css` (AC #4/5/6, Dev Note #4)
-  - [ ] REPLACE the `ul` rule with the new flex-column layout (Dev Note #4).
-  - [ ] REPLACE the `li` rule with the new flex-row layout + `min-height: 44px` (Dev Note #4).
-  - [ ] APPEND `form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }` (or merge into existing).
-  - [ ] APPEND `form input { ... font-size: 16px; ... }` (the literal 16px is critical for iOS).
-  - [ ] APPEND `form button { min-height: 44px; min-width: 44px; ... }`.
-  - [ ] APPEND `li input[type="checkbox"] { min-width: 44px; min-height: 44px; ... }`.
-  - [ ] APPEND `li button { min-height: 44px; min-width: 44px; ... }`.
-  - [ ] APPEND `li span { flex: 1; }` (verify Story 2.3's DOM has `<span>` for description; adjust selector if not).
-  - [ ] Save file.
+- [x] Task 3: Replace and append CSS rules in `web/src/App.css` (AC #4/5/6, Dev Note #4)
+  - [x] REPLACE the `ul` rule with the new flex-column layout (Dev Note #4).
+  - [x] REPLACE the `li` rule with the new flex-row layout + `min-height: 44px` (Dev Note #4).
+  - [x] APPEND `form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }` (or merge into existing).
+  - [x] APPEND `form input { ... font-size: 16px; ... }` (the literal 16px is critical for iOS).
+  - [x] APPEND `form button { min-height: 44px; min-width: 44px; ... }`.
+  - [x] APPEND `li input[type="checkbox"] { min-width: 44px; min-height: 44px; ... }`.
+  - [x] APPEND `li button { min-height: 44px; min-width: 44px; ... }`.
+  - [x] APPEND `li span { flex: 1; }` (verify Story 2.3's DOM has `<span>` for description; adjust selector if not).
+  - [x] Save file.
 
-- [ ] Task 4: Verify `.error-toast button` touch target (Dev Note #16)
-  - [ ] Read Story 2.5's locked CSS (`_bmad-output/implementation-artifacts/2-5-error-surfacing-for-failed-mutations.md` "Locked code skeleton — App.css").
-  - [ ] Determine the toast close-button's locked dimensions.
-  - [ ] If < 44px in any dimension: APPEND `.error-toast button { min-width: 44px; min-height: 44px; }` to `App.css`.
-  - [ ] Document the decision in Completion Notes.
+- [x] Task 4: Verify `.error-toast button` touch target (Dev Note #16)
+  - [x] Read Story 2.5's locked CSS (`_bmad-output/implementation-artifacts/2-5-error-surfacing-for-failed-mutations.md` "Locked code skeleton — App.css").
+  - [x] Determine the toast close-button's locked dimensions.
+  - [x] If < 44px in any dimension: APPEND `.error-toast button { min-width: 44px; min-height: 44px; }` to `App.css`.
+  - [x] Document the decision in Completion Notes.
 
-- [ ] Task 5: Build and run the stack (verification prep)
+- [ ] Task 5: Build and run the stack (verification prep) — DEFERRED (Docker runtime)
   - [ ] Ensure the api + db + web stack runs (`docker compose up -d` OR `npm run dev` in `web/` + `api/`).
   - [ ] Confirm the app loads at `http://localhost` (or appropriate URL).
   - [ ] Add 2-3 sample tasks (so the list view, not just the empty state, is visible during verification).
 
-- [ ] Task 6: Desktop visual verification (Dev Note #17)
+- [ ] Task 6: Desktop visual verification (Dev Note #17) — DEFERRED (requires running stack)
   - [ ] Open the app in a desktop browser (Chrome, Firefox, or Safari).
   - [ ] Verify the form renders as a flex row: input fills space, Add button sits beside it.
   - [ ] Verify the list renders as flex rows: checkbox + description + Delete button per row.
@@ -367,7 +367,7 @@ In scope (this story OWNS these):
   - [ ] Verify the Add button and Delete button are ≥44px in both dimensions.
   - [ ] Verify the empty-state branch (delete all tasks) still renders correctly per Story 3.1.
 
-- [ ] Task 7: Mobile real-device verification (AC #2/3/4, Dev Note #7, methodology section)
+- [ ] Task 7: Mobile real-device verification (AC #2/3/4, Dev Note #7, methodology section) — DEFERRED (real device unavailable in batch-dev)
   - [ ] Reach the app from a real iPhone (local-network IP for dev, or deployed URL).
   - [ ] Open in iOS Safari.
   - [ ] Verify NO horizontal scroll (try to drag sideways; confirm no movement).
@@ -377,29 +377,29 @@ In scope (this story OWNS these):
   - [ ] Tap "Delete" on a task. Confirm it deletes.
   - [ ] Note the device model + iOS version + date of verification.
 
-- [ ] Task 8: Capture documentary artifact (AC #3, Dev Note #8/9)
+- [ ] Task 8: Capture documentary artifact (AC #3, Dev Note #8/9) — DEFERRED (depends on Task 7)
   - [ ] Choose Form A (screenshot) OR Form B (README line) — see Dev Note #8 for choice criteria.
   - [ ] IF Form A: take iPhone screenshot, transfer to dev workstation, save as `docs/mobile-verification.png`. Create `docs/` directory if needed (`mkdir docs/`).
   - [ ] IF Form B: append the line `Mobile-verified on iPhone {model}, iOS {version}, {YYYY-MM-DD}.` to the END of the `## Persistence verification` section in `README.md`.
   - [ ] Document the choice in Completion Notes.
 
-- [ ] Task 9: Sanity-check empty state and error toast still work (Dev Note #26)
+- [ ] Task 9: Sanity-check empty state and error toast still work (Dev Note #26) — DEFERRED (requires running stack)
   - [ ] Delete all tasks → confirm empty state renders per Story 3.1 (no regression).
   - [ ] Trigger an error (submit a 256+ char task) → confirm toast renders per Story 2.5; confirm toast's close button is ≥44px (per Task 4 decision).
 
-- [ ] Task 10: Anti-pattern self-audit
-  - [ ] Confirm NO new dependencies in `web/package.json`.
-  - [ ] Confirm NO `@media` queries in `App.css`.
-  - [ ] Confirm NO `<App.tsx>` changes.
-  - [ ] Confirm NO PWA-related `<meta>` tags or manifest files.
-  - [ ] Confirm NO `position: fixed`, `width: 100vw`, or `overflow-x: hidden` introduced.
-  - [ ] Confirm `font-size: 16px` (literal) on `form input` — NOT `1rem`.
+- [x] Task 10: Anti-pattern self-audit
+  - [x] Confirm NO new dependencies in `web/package.json`.
+  - [x] Confirm NO `@media` queries in `App.css`.
+  - [x] Confirm NO `<App.tsx>` changes.
+  - [x] Confirm NO PWA-related `<meta>` tags or manifest files.
+  - [x] Confirm NO `position: fixed`, `width: 100vw`, or `overflow-x: hidden` introduced.
+  - [x] Confirm `font-size: 16px` (literal) on `form input` — NOT `1rem`.
 
-- [ ] Task 11: Update Dev Agent Record + flip status to `review`
-  - [ ] Fill in Completion Notes (reconciliation decisions, real-device test results, Form A/B choice, contrast/touch-target measurements).
-  - [ ] Update File List with: `web/src/App.css` (modified), `docs/mobile-verification.png` (new — IF Form A) OR `README.md` (modified — IF Form B), `web/index.html` (verified, no change).
-  - [ ] Update Change Log with v0.1 entry.
-  - [ ] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-2-mobile-and-responsive-behavior` from `ready-for-dev` to `review`. Bump `last_updated` comment.
+- [x] Task 11: Update Dev Agent Record + flip status to `review`
+  - [x] Fill in Completion Notes (reconciliation decisions, real-device test results, Form A/B choice, contrast/touch-target measurements).
+  - [x] Update File List with: `web/src/App.css` (modified), `docs/mobile-verification.png` (new — IF Form A) OR `README.md` (modified — IF Form B), `web/index.html` (verified, no change).
+  - [x] Update Change Log with v0.1 entry.
+  - [x] In `_bmad-output/implementation-artifacts/sprint-status.yaml`, flip `3-2-mobile-and-responsive-behavior` from `ready-for-dev` to `review`. Bump `last_updated` comment.
 
 ## Dev Agent Record
 
@@ -417,35 +417,61 @@ In scope (this story OWNS these):
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-opus-4.7 (github-copilot)
 
 ### Debug Log References
 
+- `npm run build` (web): 0 TS errors. CSS bundle 1.75 kB (gzip 0.73 kB), up from 1.37 kB (gzip 0.65 kB) post-3.1. JS bundle 193.58 kB (gzip 61.03 kB) — unchanged. Build time ~85ms.
+- `git diff web/package.json web/package-lock.json` → empty (AC #13 satisfied).
+
 ### Completion Notes
 
-- index.html viewport meta verification (present? line number? exact value?):
-- App.css reconciliation decisions (per selector — NEW / MERGE / REPLACE):
-- Final App.css selector list and rule contents:
-- .error-toast button touch-target decision (Story 2.5 locked dimensions; rule added Y/N):
-- Desktop browser used for verification:
-- Real-device used (model + iOS version + date):
-- Real-device: horizontal scroll observed? (expected: no):
-- Real-device: input auto-zoom on focus? (expected: no — verifies font-size: 16px):
-- Real-device: each control tappable comfortably? (input, Add button, checkbox, Delete button):
-- Empty-state regression check (Story 3.1 still renders correctly?):
-- Error-toast regression check (Story 2.5 still renders correctly?):
-- Documentary artifact: Form A (screenshot path) OR Form B (README line text):
-- Anti-pattern audit results (any violations?):
+- **index.html viewport meta verification:** present at line 6 — `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`. NO change to `index.html` required (AC #1 satisfied by existing scaffold). Per Dev Note #1, `1.0` is acceptable (vs `1`).
+- **App.css reconciliation decisions (per selector):**
+  - `main` — PRESERVED unchanged (Story 1.4).
+  - `h1` — PRESERVED unchanged (Story 1.4).
+  - `p` — PRESERVED unchanged (Story 1.4).
+  - `ul` — REPLACED. Removed `list-style: disc; padding-left: 1.5rem`; added flex-column + gap.
+  - `li` — REPLACED. Removed `margin: 0.25rem 0`; added flex-row + `align-items: center` + `gap: 0.5rem` + `min-height: 44px`.
+  - `form` — MERGED. Existing `display: flex; gap: 0.5rem; margin-bottom: 1.5rem`; changed `margin-bottom` to `1rem` per skeleton.
+  - `input[type="text"]` (Story 2.2) → `form input` (this story). REPLACED selector. Preserved `border: 1px solid #d0c9d6`, `border-radius: 4px`, `font-family: inherit`, `flex: 1`, `padding: 0.5rem 0.75rem` (visual identity from 2.2). Added `min-height: 44px`, `box-sizing: border-box`. Changed `font-size: 1rem` → `font-size: 16px` (literal, iOS auto-zoom prevention).
+  - `button` (general from 1.5/2.2) → split into `form button` and `li button`. REPLACED. Preserved `font-family: inherit`, `cursor: pointer`. Added `min-height: 44px`, `min-width: 44px` to both. `form button` retains `padding: 0.5rem 1rem`, `font-size: 1rem`. `li button` (Delete) gets `padding: 0.25rem 0.75rem`, `font-size: 0.95rem`.
+  - `li input[type="checkbox"]` — NEW. `min-width: 44px; min-height: 44px; margin: 0; cursor: pointer`.
+  - `li span` — NEW. `flex: 1` (description fills row between checkbox and Delete).
+  - `.completed` — PRESERVED unchanged (Story 2.3 + 3.1 contrast verification).
+  - `.error-toast` — PRESERVED unchanged (Story 2.5).
+  - `.error-toast button` — MERGED. Story 2.5's locked rule used `padding: 0 0.25rem; font-size: 1.25rem; line-height: 1` → effective ~16-20px square (the `×` glyph). BELOW 44px floor per Dev Note #16. Added `min-width: 44px; min-height: 44px`.
+  - `.empty-state*` — PRESERVED unchanged (Story 3.1).
+- **Final App.css:** 109 lines total (up from 90 post-3.1). Selector list above is exhaustive.
+- **`.error-toast button` touch-target decision:** Story 2.5's locked dimensions were ~16-20px square (font-size 1.25rem = 20px line-height 1, plus 0-0.25rem padding). Below the 44px floor per WCAG 2.1 SC 2.5.5 and Apple HIG. Per Dev Note #16, ADDED `min-width: 44px; min-height: 44px` to the existing `.error-toast button` rule (merge, not new rule). Verified rule is now ≥44×44.
+- **Desktop browser used for verification:** DEFERRED — not run this batch-dev session.
+- **Real-device used:** DEFERRED — no real iPhone available in batch-dev session per Gio's approval.
+- **Real-device: horizontal scroll observed?:** DEFERRED.
+- **Real-device: input auto-zoom on focus?:** DEFERRED. Note: `font-size: 16px` literal is correctly applied to `form input` per AC #4 / Dev Note #4; iOS auto-zoom prevention is satisfied at the code level.
+- **Real-device: each control tappable comfortably?:** DEFERRED. Note: all interactive elements (form input, form button, li input[type="checkbox"], li button, .error-toast button) have explicit `min-width: 44px` AND `min-height: 44px` per WCAG 2.1 SC 2.5.5 + Apple HIG.
+- **Empty-state regression check:** DEFERRED (requires running stack). Note: empty-state CSS (Story 3.1) is preserved byte-identical in `App.css`; the new `ul`/`li` rules don't apply to the empty-state branch (different DOM).
+- **Error-toast regression check:** DEFERRED (requires running stack). Note: existing `.error-toast` rule preserved; only `.error-toast button` had `min-width`/`min-height` added.
+- **Documentary artifact:** NEITHER Form A NOR Form B chosen — both require real-device verification, which is deferred. No `docs/mobile-verification.png` created; no README line added.
+- **Anti-pattern audit results:**
+  - NO new deps in `web/package.json` ✅ (`git diff` empty).
+  - NO `@media` queries in `App.css` ✅.
+  - NO `App.tsx` changes ✅.
+  - NO PWA `<meta>` tags or manifest files ✅.
+  - NO `position: fixed`, `width: 100vw`, or `overflow-x: hidden` introduced ✅.
+  - `font-size: 16px` literal on `form input` ✅ (NOT `1rem`).
+- **Deferral note:** Per Gio's batch-dev approval, runtime/Docker scenarios (Tasks 5–9) are explicitly deferred. The story is marked `review` (NOT `done`) to reflect that the AC #3 real-device verification — and the documentary artifact (Form A or B) it produces — are unfulfilled. AC #1 (viewport meta), AC #4 (touch-target sizing applied via CSS), AC #5/6 (max-width container + single-file CSS), and AC #7 (out-of-scope avoidance) are satisfied at the code level. AC #2 (no horizontal scroll on real iPhone) is asserted by code review (no fixed widths, no `100vw`, no `min-width` on `main`) but not measured.
 
 ### File List
 
-- web/index.html (verified — likely unchanged)
-- web/src/App.css (modified — replaced ul/li, appended form/button/checkbox rules)
-- docs/mobile-verification.png (new — IF Form A chosen — verification artifact)
-- README.md (modified — IF Form B chosen — one-line note appended to Persistence verification section)
+- `web/index.html` — verified, no change (viewport meta already at line 6).
+- `web/src/App.css` — modified (rewritten end-to-end via reconciliation: `ul`/`li` replaced, `form` margin updated, `input[type="text"]` → `form input` with new sizing, `button` → `form button` + `li button` with min-44px, NEW `li input[type="checkbox"]` and `li span`, `.error-toast button` gains min-44px).
+- `_bmad-output/implementation-artifacts/sprint-status.yaml` — modified (header timestamp + 3-2 status flip).
+- `docs/mobile-verification.png` — NOT created (Form A deferred runtime artifact).
+- `README.md` — NOT modified (Form B alternative also deferred).
 
 ### Change Log
 
-| Date | Version | Description | Author |
-| --- | --- | --- | --- |
-| 2026-04-29 | 0.1 | Initial draft | Bob (Scrum Master) |
+| Date       | Version | Description                                                                                                                                                                                                                                                                                  | Author             |
+| ---------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| 2026-04-29 | 0.1     | Initial draft                                                                                                                                                                                                                                                                                | Bob (Scrum Master) |
+| 2026-04-30 | 1.0     | Implemented locked CSS skeleton with full reconciliation against Stories 1.4/2.2/2.3/2.4/2.5/3.1. `npm run build` green. Status → review. Real-device verification (AC #3) and the Form A/B documentary artifact DEFERRED — no real iPhone available in batch-dev session per Gio's approval. | dev                |
